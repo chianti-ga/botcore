@@ -45,7 +45,7 @@ allprojects {
         // === APIs ===
         // JDA
         implementation("net.dv8tion:JDA:5.0.0-beta.5")
-        implementation 'com.github.walkyst:lavaplayer-fork:1.3.99.2'
+        implementation 'com.github.walkyst:lavaplayer-fork:1.4.0'
 
         // === Logging ==
 
