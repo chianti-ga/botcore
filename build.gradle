@@ -7,7 +7,7 @@ plugins {
     //Update deps
     id "com.github.ben-manes.versions" version "0.46.0"
 
-    id "io.freefair.lombok" version "6.4.3"
+    id "io.freefair.lombok" version "6.6.3"
 
     id 'java-library'
     id 'maven-publish'
