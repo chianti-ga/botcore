@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Return the db values and file in pm
+ * Simple ping command
  *
  * @author Skitou
  */
