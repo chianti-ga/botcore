@@ -21,8 +21,8 @@ import java.util.function.Predicate;
  * @see AbstractCommand
  */
 @Children(targetPackages = {
-        "fr.mounak.discord.nakbot.commands",
-        "fr.mounak.discord.nakbot.subsystems"
+        "fr.skitou.botcore.commands",
+        "fr.skitou.botcore.subsystems"
 })
 public interface ICommand {
     String prefix = BotInstance.isTestMode() ? "?" : Config.CONFIG.getPropertyOrDefault("bot.prefix");
