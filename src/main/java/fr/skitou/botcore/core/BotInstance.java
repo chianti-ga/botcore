@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -39,6 +40,7 @@ public class BotInstance {
     private static JDA jda = null;
 
     private static String[] botArgs = null;
+    @Getter
     private static String coreVersion;
 
 
@@ -85,8 +87,11 @@ public class BotInstance {
         }
 
         try {
-            coreVersion = Files.readAllLines(Path.of(ClassLoader.getSystemResource("version.txt").getPath())).get(0);
+            coreVersion = Files.readAllLines(Path.of(ClassLoader.getSystemResource("version.txt").toURI())).get(0);
+            //coreVersion = Files.readAllLines(Path.of(ClassLoader.getSystemResource("version.txt").getFile())).get(0);
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
 
