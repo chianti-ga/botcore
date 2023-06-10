@@ -57,7 +57,7 @@ public enum Config {
     }
 
     /**
-     * Provide shorcuts for frequently-used properties.
+     * Provide shortcuts for frequently-used properties.
      */
     static String getGuildIdOrDefault(String guildConfigName, String defaultValue) {
         final Optional<String> guildIdOptional = Optional.of(CONFIG.getPropertyElement("guild").orElseThrow().getAsJsonObject().get(guildConfigName).getAsString());

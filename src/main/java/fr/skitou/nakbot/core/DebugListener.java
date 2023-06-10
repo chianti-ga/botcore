@@ -12,6 +12,6 @@ public class DebugListener extends ListenerAdapter {
 
     @Override
     public void onGenericGuild(@Nonnull GenericGuildEvent event) {
-        logger.debug("Received a GenericGuildEvent from LaConfrérie.");
+        logger.debug("Received a GenericGuildEvent from " + event.getGuild().getName() + ".");
     }
 }

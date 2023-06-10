@@ -37,28 +37,20 @@ public class ConfigCommand extends AbstractCommand {
         }
 
         switch (event.getArgs().get(0)) {
-            case "list":
-                listConfig(event);
-                break;
-
-            case "edit":
+            case "list" -> listConfig(event);
+            case "edit" -> {
                 if (event.getArgs().size() >= 3) editConfig(event);
                 else event.getChannel().sendMessage(prefix + "config edit [key] [value]").queue();
-                break;
-
-            case "add":
+            }
+            case "add" -> {
                 if (event.getArgs().size() >= 3) addConfig(event);
                 else event.getChannel().sendMessage(prefix + "config add [key] [value]").queue();
-                break;
-
-            case "remove":
+            }
+            case "remove" -> {
                 if (event.getArgs().size() >= 3) removeConfig(event);
                 else event.getChannel().sendMessage(prefix + "config remove [key] [value]").queue();
-                break;
-
-            default:
-                event.getChannel().sendMessage(getHelp()).queue();
-                break;
+            }
+            default -> event.getChannel().sendMessage(getHelp()).queue();
         }
     }
 
@@ -213,7 +205,7 @@ public class ConfigCommand extends AbstractCommand {
     }
 
     /**
-     * Try to saving the config
+     * Try to save the config
      *
      * @return true if file saved successfully, and false if not
      */

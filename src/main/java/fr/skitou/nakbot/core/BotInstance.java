@@ -149,7 +149,7 @@ public class BotInstance {
         private String subsystemPackage;
         private String databaseEntitiesPackage;
 
-        private String[] args;
+        private final String[] args;
 
         private Activity activity;
 

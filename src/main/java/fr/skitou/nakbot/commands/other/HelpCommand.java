@@ -29,7 +29,7 @@ public class HelpCommand extends AbstractCommand {
             return;
         }
         EmbedBuilder builder = new EmbedBuilder()
-                .setTitle("Commandes");
+                .setTitle("Commands");
         Map<String, List<String>> fields = new HashMap<>();
         BotInstance.getEventListeners().stream().filter(eventListener -> eventListener instanceof CommandAdapter)
                 .forEach(eventListener -> ((CommandAdapter) eventListener).getCommands()

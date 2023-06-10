@@ -6,7 +6,7 @@ import fr.skitou.nakbot.utils.IsSenderAllowed;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Throw a error
+ * Throw an error
  *
  * @author Uku
  */

@@ -50,7 +50,7 @@ public class FilesCache {
     }
 
     /**
-     * Deletes all files who is in the cache at least ~10minutes
+     * Deletes all files who are in the cache at least ~10minutes
      */
     private void deleteDisposableFiles() {
         AtomicInteger fileCount = new AtomicInteger();

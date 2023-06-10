@@ -75,7 +75,7 @@ public class CommandAdapter extends ListenerAdapter {
 
         // Since CommandReceivedEvent is a subtype of GuildMessageReceivedEvent,
         // we unfortunately receive our own generated event.
-        // This is bad and WILL create a infinite loop if we dont catch it.
+        // This is bad and WILL create an infinite loop if we don't catch it.
         if (event instanceof CommandReceivedEvent) {
             return;
         }

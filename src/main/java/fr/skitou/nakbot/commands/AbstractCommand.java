@@ -45,7 +45,7 @@ public abstract class AbstractCommand implements ICommand {
     /**
      * A convenience method to send a message in the form of a {@link String} to the {@link TextChannel} in which the event was received.
      * <br/>
-     * This method is a warpper around {@link #sendMessage(TextChannel, String)} using {@link CommandReceivedEvent#getChannel() event.getChannel()} as the {@link TextChannel}.
+     * This method is a wrapper around {@link #sendMessage(TextChannel, String)} using {@link CommandReceivedEvent#getChannel() event.getChannel()} as the {@link TextChannel}.
      *
      * @param event The {@link CommandReceivedEvent} from which to get the {@link TextChannel} where the message will be sent.
      * @author U_Bren
@@ -70,7 +70,7 @@ public abstract class AbstractCommand implements ICommand {
     /**
      * A convenience method to send this command's {@link #getHelp()} formatted as an {@link net.dv8tion.jda.api.entities.MessageEmbed embed} to the {@link TextChannel} in which the event was received.
      * <br/>
-     * This method is a warpper around {@link #sendHelp(TextChannel)} using {@link CommandReceivedEvent#getChannel() event.getChannel()} as the {@link TextChannel}.
+     * This method is a wrapper around {@link #sendHelp(TextChannel)} using {@link CommandReceivedEvent#getChannel() event.getChannel()} as the {@link TextChannel}.
      *
      * @param event The {@link CommandReceivedEvent} from which to get the {@link TextChannel} where the message will be sent.
      * @author U_Bren

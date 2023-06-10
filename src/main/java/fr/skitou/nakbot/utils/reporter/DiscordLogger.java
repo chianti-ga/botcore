@@ -41,12 +41,14 @@ public class DiscordLogger extends AppenderBase<ILoggingEvent> {
 
     private int getColor(Level level) {
         switch (level.levelInt) {
-            case Level.WARN_INT:
+            case Level.WARN_INT -> {
                 return 0xd67309;
-            case Level.ERROR_INT:
+            }
+            case Level.ERROR_INT -> {
                 return 0xdb3f23;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
         return 0xc0c0c0;
     }
