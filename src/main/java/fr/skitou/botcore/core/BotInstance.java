@@ -19,8 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,6 +39,8 @@ public class BotInstance {
     private static JDA jda = null;
 
     private static String[] botArgs = null;
+    private static String coreVersion;
+
 
     public BotInstance(BotInstanceBuilder builder) {
         classicCommandPackage = builder.classicCommandPackage;
@@ -49,7 +50,7 @@ public class BotInstance {
         botArgs = builder.args;
         eventListeners = Set.of(CommandAdapter.getInstance(), SubsystemAdapter.getInstance());
 
-        logger.info(isTestMode() ? "Bot Starting in TESTMODE" : "Bot Starting");
+        logger.warn(isTestMode() ? "Bot Starting in TESTMODE" : "Bot Starting");
 
         runWhenReady(() -> {
             HashSet<ISlashCommand> slashCommands = CommandAdapter.getInstance().getSlashcommands();
@@ -82,6 +83,13 @@ public class BotInstance {
             logger.error("ERROR: Login failed: " + e.getMessage() + ":" + Arrays.toString(e.getStackTrace()) + "\n Check the token or retry later.");
             Runtime.getRuntime().exit(2);
         }
+
+        try {
+            coreVersion = Files.readAllLines(Path.of(ClassLoader.getSystemResource("version.txt").getPath())).get(0);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         //Run once injection point
         //Only used for test purposes.
         try {
@@ -113,17 +121,6 @@ public class BotInstance {
 
     private static String getToken() {
         String token = "";
-        //Swarm
-        try {
-            token = Files.readString(Paths.get("/secrets/token").toAbsolutePath())
-                    .replace("\n", "")
-                    .strip();
-            logger.debug("Using secret as the token provider.");
-        } catch (NoSuchFileException e) {
-            logger.debug("Secret not found.");
-        } catch (IOException | OutOfMemoryError | SecurityException e) {
-            logger.warn("Can't read the secret.", e);
-        }
         if (token.isEmpty()) {
             //Config
             Optional<String> opToken = Config.CONFIG.getProperty("bot.token");

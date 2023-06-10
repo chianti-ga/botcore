@@ -40,7 +40,7 @@ public class SubsystemCommand extends AbstractCommand {
 
     @Override
     public IsSenderAllowed isSenderAllowed() {
-        return IsSenderAllowed.BotAdmin.and(IsSenderAllowed.Admin, IsSenderAllowed.G_DEV);
+        return IsSenderAllowed.BotAdmin;
     }
 
     @Override
