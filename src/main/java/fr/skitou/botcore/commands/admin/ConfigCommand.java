@@ -228,7 +228,8 @@ public class ConfigCommand extends AbstractCommand {
         List<String> secrets = List.of(
                 BotInstance.getJda().getToken(),
                 config.getPropertyOrDefault("bot.token"),
-                config.getPropertyOrDefault("loggerUrl")
+                config.getPropertyOrDefault("loggerUrl"),
+                config.getPropertyOrDefault("sentryDns")
         );
 
         for (String secret : secrets) source = source.replaceAll(secret, "[SECRET]");
