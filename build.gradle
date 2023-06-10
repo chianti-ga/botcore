@@ -90,7 +90,7 @@ tasks.withType(AbstractArchiveTask) {
 }
 
 tasks.withType(JavaCompile) {
-    new File(sourceSets.main.output.resourcesDir, "version.txt").text = (this.version as String)
+    new File(sourceSets.main.output.resourcesDir, "coreversion.txt").text = (this.version as String)
     options.encoding('UTF-8')
 }
 

@@ -87,7 +87,7 @@ public class BotInstance {
         }
 
         try {
-            coreVersion = Files.readAllLines(Path.of(ClassLoader.getSystemResource("version.txt").toURI())).get(0);
+            coreVersion = Files.readAllLines(Path.of(ClassLoader.getSystemResource("coreversion.txt").toURI())).get(0);
             //coreVersion = Files.readAllLines(Path.of(ClassLoader.getSystemResource("version.txt").getFile())).get(0);
         } catch (IOException e) {
             throw new RuntimeException(e);
