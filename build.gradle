@@ -25,6 +25,7 @@ repositories {
     }
 }
 allprojects {
+
     dependencies {
         compileOnly 'org.projectlombok:lombok:1.18.6'
         annotationProcessor 'org.projectlombok:lombok:1.18.6'
@@ -89,12 +90,16 @@ tasks.withType(AbstractArchiveTask) {
 }
 
 tasks.withType(JavaCompile) {
+    new File(sourceSets.main.output.resourcesDir, "version.txt").text = (this.version as String)
     options.encoding('UTF-8')
 }
 
 reckon {
     scopeFromProp()
     stageFromProp('release', 'beta', 'dev')
+    def resourcesDir = sourceSets.main.output.resourcesDir
+    resourcesDir.mkdirs()
+    new File(resourcesDir, "version.txt").text = this.version
 }
 
 test {
