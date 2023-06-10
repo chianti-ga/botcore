@@ -90,7 +90,6 @@ tasks.withType(AbstractArchiveTask) {
 }
 
 tasks.withType(JavaCompile) {
-    new File(sourceSets.main.output.resourcesDir, "coreversion.txt").text = (this.version as String)
     options.encoding('UTF-8')
 }
 
@@ -99,7 +98,7 @@ reckon {
     stageFromProp('release', 'beta', 'dev')
     def resourcesDir = sourceSets.main.output.resourcesDir
     resourcesDir.mkdirs()
-    new File(resourcesDir, "version.txt").text = this.version
+    new File(resourcesDir, "coreversion.txt").text = this.version
 }
 
 test {

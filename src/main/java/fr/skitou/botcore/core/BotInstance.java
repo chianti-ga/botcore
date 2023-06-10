@@ -146,13 +146,11 @@ public class BotInstance {
     }
 
     public static class BotInstanceBuilder {
+        private final String[] args;
         private String classicCommandPackage;
         private String slashCommandPackage;
         private String subsystemPackage;
         private String databaseEntitiesPackage;
-
-        private final String[] args;
-
         private Activity activity;
 
         private Collection<CacheFlag> enabledcacheFlags;
