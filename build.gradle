@@ -138,20 +138,25 @@ java {
 javadoc {
     options.encoding('UTF-8')
 }
+
 publishing {
+    repositories {
+        maven {
+            name "reposiliteRepositoryReleases"
+            url "http://45.155.169.234:4578/releases"
+            allowInsecureProtocol = true
+            credentials(PasswordCredentials)
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
+    }
     publications {
         maven(MavenPublication) {
             groupId = this.group
             artifactId = this.name
             version = this.version
-
             from components.java
-        }
-    }
-    repositories {
-        maven {
-            name "reposiliteRepository"
-            url "http://45.155.169.234:4578/releases"
         }
     }
 }
