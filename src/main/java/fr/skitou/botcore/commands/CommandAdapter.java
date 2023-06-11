@@ -43,6 +43,7 @@ public class CommandAdapter extends ListenerAdapter {
 
         slashcommands.addAll(ReflectionUtils.getSubTypesInstance(ISlashCommand.class, BotInstance.slashCommandPackage));
 
+        infoBuilder.setLength(0);
         infoBuilder.append("Detected Slash commands: ");
         infoBuilder.append("Total: ").append(slashcommands.size());
         logger.info(infoBuilder + "\n");

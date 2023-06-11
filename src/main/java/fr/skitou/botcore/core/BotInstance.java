@@ -54,16 +54,17 @@ public class BotInstance {
 
         logger.warn(isTestMode() ? "Bot Starting in TESTMODE" : "Bot Starting");
 
+        // Create instances of SlashCommands when JDA is ready
         runWhenReady(() -> {
             HashSet<ISlashCommand> slashCommands = CommandAdapter.getInstance().getSlashcommands();
 
             jda.getGuilds().forEach(guild -> {
                 var a = slashCommands.stream()
-                        .map(iSlashCommand -> Commands.slash(iSlashCommand.getName(), iSlashCommand.getHelp())
+                        .map(iSlashCommand ->
+                                Commands.slash(iSlashCommand.getName(), iSlashCommand.getHelp())
                                 .addOptions(iSlashCommand.getOptionData())
                                 .addSubcommands(iSlashCommand.getSubcommandDatas())).collect(Collectors.toSet());
-
-                slashCommands.forEach(iSlashCommand -> System.out.println(iSlashCommand.getName() + " " + iSlashCommand.getSubcommandDatas().stream().map(SubcommandData::getName).toList()));
+                System.out.println(a.size());
                 guild.updateCommands().addCommands(a).queue();
             });
 
