@@ -64,7 +64,6 @@ public class BotInstance {
                                 Commands.slash(iSlashCommand.getName(), iSlashCommand.getHelp())
                                 .addOptions(iSlashCommand.getOptionData())
                                 .addSubcommands(iSlashCommand.getSubcommandDatas())).collect(Collectors.toSet());
-                System.out.println(a.size());
                 guild.updateCommands().addCommands(a).queue();
             });
 
@@ -90,9 +89,7 @@ public class BotInstance {
         try {
             coreVersion = Files.readAllLines(Path.of(ClassLoader.getSystemResource("coreversion.txt").toURI())).get(0);
             //coreVersion = Files.readAllLines(Path.of(ClassLoader.getSystemResource("version.txt").getFile())).get(0);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (URISyntaxException e) {
+        } catch (IOException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
 
