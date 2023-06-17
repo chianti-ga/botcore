@@ -205,6 +205,7 @@ public class BotInstance {
         }
 
         public BotInstance build() {
+            //noinspection InstantiationOfUtilityClass
             return new BotInstance(this);
         }
     }

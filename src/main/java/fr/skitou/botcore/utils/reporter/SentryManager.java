@@ -11,7 +11,8 @@ public class SentryManager {
     }
 
     public static SentryManager getInstance() {
-        if (instance == null) instance = new SentryManager();
+        if (instance == null) //noinspection InstantiationOfUtilityClass
+            instance = new SentryManager();
         return instance;
     }
 }

@@ -106,7 +106,7 @@ public class CommandAdapter extends ListenerAdapter {
                 .filter(matchedCommand ->
                         matchedCommand.isSenderAllowed().test(event.getMember()) ||
                                 IsSenderAllowed.BotAdmin.test(event.getMember())) //Hardcoded bypass for Bot admins.
-                .limit(1) //TODO: Find a way to log a error if multiple commands match.
+                .limit(1) //TODO: Find a way to log an error if multiple commands match.
                 .forEach(command -> dispatchEvent(command, event));
     }
 

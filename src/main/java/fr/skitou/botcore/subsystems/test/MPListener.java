@@ -8,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
+
 @SuppressWarnings("unused") //Automatically discovered via reflection. See SubsystemAdapter.
 public class MPListener extends AbstractSubsystem {
     private final Logger logger = LoggerFactory.getLogger(MPListener.class);
@@ -32,7 +34,7 @@ public class MPListener extends AbstractSubsystem {
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         if (event.isFromType(ChannelType.PRIVATE)) {
             if (event.getAuthor().getId().equalsIgnoreCase(BotInstance.getJda().getSelfUser().getId()))
-                logger.info("Sent dm to " + event.getChannel().asPrivateChannel().getUser().getName() + ": " + event.getMessage().getContentDisplay());
+                logger.info("Sent dm to " + Objects.requireNonNull(event.getChannel().asPrivateChannel().getUser()).getName() + ": " + event.getMessage().getContentDisplay());
             else
                 logger.info("Received dm from " + event.getAuthor().getName() + ": " + event.getMessage().getContentDisplay());
         }
