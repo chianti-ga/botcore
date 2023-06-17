@@ -87,7 +87,6 @@ public class BotInstance {
 
         try {
             coreVersion = Files.readAllLines(Path.of(ClassLoader.getSystemResource("coreversion.txt").toURI())).get(0);
-            //coreVersion = Files.readAllLines(Path.of(ClassLoader.getSystemResource("version.txt").getFile())).get(0);
         } catch (IOException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -206,7 +205,6 @@ public class BotInstance {
         }
 
         public BotInstance build() {
-            //return new BotInstance(classicCommandPackage, slashCommandPackage, subsystemPackage, args, activity, enabledcacheFlags, enabledintents, disabledcacheFlags, disabledintents);
             return new BotInstance(this);
         }
     }

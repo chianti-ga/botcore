@@ -20,7 +20,6 @@ public class SubsystemAdapter implements EventListener {
     private static SubsystemAdapter instance;
 
     public SubsystemAdapter() {
-
         subsystems.addAll(ReflectionUtils.getSubTypesInstance(ISubsystem.class));
         subsystems.addAll(ReflectionUtils.getSubTypesInstance(ISubsystem.class, BotInstance.subsystemPackage));
 

@@ -12,7 +12,6 @@ public class CommandReceivedEvent extends MessageReceivedEvent {
     private final LinkedList<String> args;
     private final MessageReceivedEvent messageReceivedEvent;
 
-
     CommandReceivedEvent(MessageReceivedEvent event) {
         super(event.getJDA(), event.getResponseNumber(), event.getMessage());
         String[] rowMessage = event.getMessage().getContentRaw().split(" ");

@@ -97,7 +97,7 @@ public class CommandManager extends AbstractCommand {
 
     private void listCommand(CommandReceivedEvent event) {
         EmbedBuilder builder = new EmbedBuilder();
-        builder.setTitle("JavaBot Subsystems").setDescription("JavaBot subsystem status");
+        builder.setTitle("Subsystems").setDescription("subsystem status");
         CommandAdapter.getInstance().getCommands().stream().sorted(Comparator.comparing(ICommand::getName)).forEach(iCommand ->
                 builder.addField((iCommand.isEnabled() ? "🟢 " : "🔴 ") + iCommand.getName(), iCommand.getHelp(), false)
         );

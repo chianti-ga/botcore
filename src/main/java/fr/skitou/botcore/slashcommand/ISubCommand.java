@@ -30,6 +30,12 @@ public interface ISubCommand {
 
     String CommandClassName();
 
+    /**
+     * see <a href="https://jda.wiki/using-jda/interactions/">Discord JDA</a>
+     *
+     * @return Return {@link Set} containing all {@link OptionData}.
+     */
+
     default Set<OptionData> getOptionData() {
         return Set.of();
     }

@@ -29,10 +29,18 @@ public interface ISlashCommand {
 
     void onCommandReceived(SlashCommandInteractionEvent event);
 
+    /**
+     * see <a href="https://jda.wiki/using-jda/interactions/">Discord JDA</a>
+     *
+     * @return Return {@link Set} containing all {@link OptionData}.
+     */
     default Set<OptionData> getOptionData() {
         return Set.of();
     }
 
+    /**
+     * @return Return {@link Set} containing all {@link SubcommandData}.
+     */
     @NotNull
     default Set<SubcommandData> getSubcommandDatas() {
         return Set.of();
