@@ -33,7 +33,7 @@ public enum Config {
      */
     Config() {
         String configFileName = "config.json";
-        File configFile = new File(configFileName);
+        File configFile = new File("data", configFileName);
         URL urlSourceJson = ClassLoader.getSystemResource(configFileName);
 
         assert urlSourceJson != null;
