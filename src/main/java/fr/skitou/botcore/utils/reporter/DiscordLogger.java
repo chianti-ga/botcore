@@ -27,7 +27,7 @@ public class DiscordLogger extends AppenderBase<ILoggingEvent> {
      */
     @Override
     protected void append(ILoggingEvent event) {
-        if (!event.getLevel().isGreaterOrEqual(Level.WARN)) return;
+        if (!event.getLevel().isGreaterOrEqual(Level.ERROR)) return;
         Splitter.fixedLength(MessageEmbed.TEXT_MAX_LENGTH).split(event.getFormattedMessage()).forEach(s -> {
             WebhookEmbedBuilder builder = new WebhookEmbedBuilder()
                     .setColor(getColor(event.getLevel()))
