@@ -34,8 +34,6 @@ public enum Config {
         File configFile = new File("data", configFileName);
         URL urlSourceJson = ClassLoader.getSystemResource(configFileName);
 
-        configFile.mkdirs();
-
         try {
             if (!configFile.exists()) { // If root file not found, copy from source
                 logger.warn("Config file not found, copying from sources...");
