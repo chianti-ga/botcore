@@ -36,22 +36,21 @@ public enum Config {
         File configFile = new File("data", configFileName);
         URL urlSourceJson = ClassLoader.getSystemResource(configFileName);
 
-        assert urlSourceJson != null;
+        configFile.mkdirs();
 
         try {
             if (!configFile.exists()) { // If root file not found, copy from source
                 logger.warn("Config file not found, copying from sources...");
-                Files.copy(Paths.get(urlSourceJson.toURI()), configFile.toPath());
+                Files.copy(urlSourceJson.openStream(), configFile.toPath());
             }
 
-            BufferedReader reader = new BufferedReader(new FileReader(urlSourceJson.getPath()));
-            defaultJson = gson.fromJson(reader, JsonObject.class);
-            reader.close();
 
-            reader = new BufferedReader(new FileReader(configFile.toString()));
+            defaultJson = gson.fromJson(new String(urlSourceJson.openStream().readAllBytes()), JsonObject.class);
+
+            BufferedReader reader = new BufferedReader(new FileReader(configFile.toString()));
             rootJson = gson.fromJson(reader, JsonObject.class);
             reader.close();
-        } catch (IOException | URISyntaxException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

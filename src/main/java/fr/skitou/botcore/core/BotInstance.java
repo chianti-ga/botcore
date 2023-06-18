@@ -86,8 +86,8 @@ public class BotInstance {
         }
 
         try {
-            coreVersion = Files.readAllLines(Path.of(ClassLoader.getSystemResource("coreversion.txt").toURI())).get(0);
-        } catch (IOException | URISyntaxException e) {
+            coreVersion = new String(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("coreversion.txt")).readAllBytes());
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
