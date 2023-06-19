@@ -115,8 +115,9 @@ jar {
 
 task getVersionFromGit() {
     def command = 'git describe --tags'
-    def version = command.execute().text.trim()
-    println "Application version: ${version}"
+    project.version = command.execute().text.trim()
+    println "Application version: ${project.version}"
+
 }
 tasks.named('build') {
     dependsOn('getVersionFromGit')
@@ -163,10 +164,4 @@ publishing {
             from components.java
         }
     }
-}
-
-tasks.withType(org.gradle.jvm.tasks.Jar){
-    def resourcesDir = sourceSets.main.output.resourcesDir
-    resourcesDir.mkdirs()
-    new File(resourcesDir, "coreversion.txt").text = this.version
 }
