@@ -3,7 +3,7 @@ plugins {
     id 'idea'
 
     //Versioning
-    id "org.ajoberstar.reckon" version "0.16.1"
+    id "org.ajoberstar.reckon" version "0.18.0"
     //Update deps
     id "com.github.ben-manes.versions" version "0.46.0"
 
