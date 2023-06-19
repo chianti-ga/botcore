@@ -1,9 +1,6 @@
 plugins {
     id 'java'
     id 'idea'
-
-    //Versioning
-    id "org.ajoberstar.reckon" version "0.16.1"
     //Update deps
     id "com.github.ben-manes.versions" version "0.46.0"
 
@@ -93,11 +90,6 @@ tasks.withType(JavaCompile) {
     options.encoding('UTF-8')
 }
 
-reckon {
-    scopeFromProp()
-    stageFromProp('release', 'beta', 'dev')
-}
-
 test {
     useJUnitPlatform()
 }
@@ -111,7 +103,23 @@ compileTestJava {
 }
 
 jar {
+    manifest {
+        attributes(
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.version
+        )
+
+    }
     destinationDirectory.set file('build/libs/')
+}
+
+task getVersionFromGit() {
+    def command = 'git describe --tags --abbrev=0'
+    def version = command.execute().text.trim()
+    println "Application version: ${version}"
+}
+tasks.named('build') {
+    dependsOn('getVersionFromGit')
 }
 
 task copyJar(type: Copy) {
