@@ -16,7 +16,10 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.*;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 
 public class BotInstance {
@@ -36,7 +39,7 @@ public class BotInstance {
 
     private static String[] botArgs = null;
     @Getter
-    private static final String coreVersion = BotInstance.class.getPackage().getImplementationVersion();
+    private static String coreVersion;
 
 
     public BotInstance(BotInstanceBuilder builder) {
@@ -90,6 +93,16 @@ public class BotInstance {
         }
 
         SentryManager.getInstance();
+
+
+        Manifest manifest = null;
+        try {
+            manifest = new Manifest(ClassLoader.getSystemResourceAsStream("META-INF/MANIFEST.MF"));
+            coreVersion = manifest.getMainAttributes().getValue("BotCore-Version");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     /**
