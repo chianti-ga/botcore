@@ -114,7 +114,7 @@ jar {
 }
 
 task getVersionFromGit() {
-    def command = 'git describe --tags --abbrev=0'
+    def command = 'git describe --tags'
     def version = command.execute().text.trim()
     println "Application version: ${version}"
 }
