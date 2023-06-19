@@ -16,7 +16,6 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,7 +36,7 @@ public class BotInstance {
 
     private static String[] botArgs = null;
     @Getter
-    private static String coreVersion;
+    private static final String coreVersion = BotInstance.class.getPackage().getImplementationVersion();
 
 
     public BotInstance(BotInstanceBuilder builder) {
@@ -80,12 +79,6 @@ public class BotInstance {
             e.getCause();
             logger.error("ERROR: Login failed: " + e.getMessage() + ":" + Arrays.toString(e.getStackTrace()) + "\n Check the token or retry later.");
             Runtime.getRuntime().exit(2);
-        }
-
-        try {
-            coreVersion = new String(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("coreversion.txt")).readAllBytes());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
 
         //Run once injection point
