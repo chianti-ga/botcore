@@ -53,6 +53,8 @@ public class ReflectionUtils {
                 .filter(aClass -> !(Modifier.isAbstract(aClass.getModifiers()) || Modifier.isInterface(aClass.getModifiers())))
                 .collect(Collectors.toSet());
 
+        subTypesClasses.forEach(System.out::println);
+
         //We get an instance from each class.
         subTypesClasses.forEach(subTypeClass -> {
             try {
