@@ -33,10 +33,13 @@ public class CommandAdapter extends ListenerAdapter {
     public CommandAdapter() {
         commands.addAll(ReflectionUtils.getSubTypesInstance(ICommand.class));
         commands.forEach(iCommand -> System.out.println(iCommand.getCommand()));
+        System.out.println("");
         commands.addAll(ReflectionUtils.getSubTypesInstance(ICommand.class, BotInstance.classicCommandPackage));
         commands.forEach(iCommand -> System.out.println(iCommand.getCommand()));
+        System.out.println("");
         commands.addAll(ReflectionUtils.getSubTypesInstance(ICommand.class, BotInstance.subsystemPackage));
         commands.forEach(iCommand -> System.out.println(iCommand.getCommand()));
+        System.out.println("");
 
         StringBuilder infoBuilder = new StringBuilder();
         infoBuilder.append("Detected commands: ");
