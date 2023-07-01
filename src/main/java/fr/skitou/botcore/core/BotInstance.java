@@ -59,7 +59,7 @@ public class BotInstance {
             jda.getGuilds().forEach(guild -> {
                 var a = slashCommands.stream()
                         .map(iSlashCommand ->
-                                Commands.slash(iSlashCommand.getName(), iSlashCommand.getHelp())
+                                Commands.slash(iSlashCommand.getName().toLowerCase(), iSlashCommand.getHelp())
                                         .addOptions(iSlashCommand.getOptionData())
                                         .addSubcommands(iSlashCommand.getSubcommandDatas())).collect(Collectors.toSet());
                 guild.updateCommands().addCommands(a).queue();
