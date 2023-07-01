@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Set;
 
 @Children(targetPackages = {
-        "fr.mounak.discord.nakbot.slashcommand",
+        "fr.skitou.botcore.slashcommand",
 })
 public interface ISlashCommand {
 
