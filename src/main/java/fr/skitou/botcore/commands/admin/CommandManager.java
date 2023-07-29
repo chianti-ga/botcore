@@ -44,19 +44,19 @@ public class CommandManager extends AbstractCommand {
 
     @Override
     public void onCommandReceived(CommandReceivedEvent event) {
-        if (event.getArgs().isEmpty()) {
+        if(event.getArgs().isEmpty()) {
             event.getChannel().sendMessage(getHelp()).queue();
             return;
         }
 
-        switch (event.getArgs().get(0).toLowerCase()) {
+        switch(event.getArgs().get(0).toLowerCase()) {
             case "list" -> listCommand(event);
             case "enable" -> {
-                if (event.getArgs().size() < 2) {
+                if(event.getArgs().size() < 2) {
                     event.getChannel().sendMessage(getHelp()).queue();
                     return;
                 }
-                if (event.getArgs().get(1).equalsIgnoreCase("all")) {
+                if(event.getArgs().get(1).equalsIgnoreCase("all")) {
                     CommandAdapter.getInstance().getCommands().stream()
                             .filter(iCommand -> !iCommand.getName().equalsIgnoreCase(getName()))
                             .peek(e -> logger.info("Enabling " + e.getName()))
@@ -72,11 +72,11 @@ public class CommandManager extends AbstractCommand {
                 listCommand(event);
             }
             case "disable" -> {
-                if (event.getArgs().size() < 2) {
+                if(event.getArgs().size() < 2) {
                     event.getChannel().sendMessage(getHelp()).queue();
                     return;
                 }
-                if (event.getArgs().get(1).equalsIgnoreCase("all")) {
+                if(event.getArgs().get(1).equalsIgnoreCase("all")) {
                     CommandAdapter.getInstance().getCommands().stream()
                             .filter(iCommand -> !iCommand.getName().equalsIgnoreCase(getName()))
                             .peek(e -> logger.info("Disabling " + e.getName()))

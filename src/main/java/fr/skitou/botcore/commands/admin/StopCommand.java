@@ -16,12 +16,6 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("unused") //Automatically discovered via reflection. See CommandAdapter.
 public class StopCommand extends AbstractCommand {
 
-    public static void stop(TextChannel c) {
-        c.sendMessage("Stopping the bot...").queue();
-        BotInstance.getJda().shutdownNow();
-        Runtime.getRuntime().exit(0);
-    }
-
     @Override
     public @NotNull String getCommand() {
         return "stop";
@@ -39,10 +33,16 @@ public class StopCommand extends AbstractCommand {
 
     @Override
     public void onCommandReceived(CommandReceivedEvent event) {
-        if (event.getArgs().size() == 1 && event.getArgs().get(0).equalsIgnoreCase("now")) {
+        if(event.getArgs().size() == 1 && event.getArgs().get(0).equalsIgnoreCase("now")) {
             stop(event.getChannel().asTextChannel());
             Runtime.getRuntime().exit(0);
         }
         stop(event.getGuildChannel().asTextChannel());
+    }
+
+    public static void stop(TextChannel c) {
+        c.sendMessage("Stopping the bot...").queue();
+        BotInstance.getJda().shutdownNow();
+        Runtime.getRuntime().exit(0);
     }
 }

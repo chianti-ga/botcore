@@ -31,23 +31,23 @@ public class ConfigCommand extends AbstractCommand {
 
     @Override
     public void onCommandReceived(CommandReceivedEvent event) {
-        if (event.getArgs().isEmpty()) {
+        if(event.getArgs().isEmpty()) {
             event.getChannel().sendMessage(getHelp()).queue();
             return;
         }
 
-        switch (event.getArgs().get(0)) {
+        switch(event.getArgs().get(0)) {
             case "list" -> listConfig(event);
             case "edit" -> {
-                if (event.getArgs().size() >= 3) editConfig(event);
+                if(event.getArgs().size() >= 3) editConfig(event);
                 else event.getChannel().sendMessage(prefix + "config edit [key] [value]").queue();
             }
             case "add" -> {
-                if (event.getArgs().size() >= 3) addConfig(event);
+                if(event.getArgs().size() >= 3) addConfig(event);
                 else event.getChannel().sendMessage(prefix + "config add [key] [value]").queue();
             }
             case "remove" -> {
-                if (event.getArgs().size() >= 3) removeConfig(event);
+                if(event.getArgs().size() >= 3) removeConfig(event);
                 else event.getChannel().sendMessage(prefix + "config remove [key] [value]").queue();
             }
             default -> event.getChannel().sendMessage(getHelp()).queue();
@@ -87,29 +87,29 @@ public class ConfigCommand extends AbstractCommand {
 
         Optional<JsonElement> property = conf.getPropertyElement(setting.getKey());
 
-        if (property.isEmpty()) {
+        if(property.isEmpty()) {
             event.getChannel().sendMessage("Key not existing").queue();
             return;
-        } else if (!property.get().isJsonArray()) {
+        } else if(!property.get().isJsonArray()) {
             event.getChannel().sendMessage("To edit a single parameter please use " + prefix + "config edit [key] [value]").queue();
             return;
         }
 
         boolean found = false;
         JsonArray jsonArray = ((JsonArray) property.get());
-        for (JsonElement el : jsonArray) {
-            if (el.isJsonObject() || el.isJsonArray()) continue;
+        for(JsonElement el : jsonArray) {
+            if(el.isJsonObject() || el.isJsonArray()) continue;
 
-            if (el.getAsString().equals(setting.getValue())) {
+            if(el.getAsString().equals(setting.getValue())) {
                 jsonArray.remove(el);
                 found = true;
                 break;
             }
         }
 
-        if (found) {
+        if(found) {
             boolean saved = save(event);
-            if (saved) {
+            if(saved) {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(0x1efa88)
                         .setTitle(getName())
@@ -137,10 +137,10 @@ public class ConfigCommand extends AbstractCommand {
 
         Optional<JsonElement> property = conf.getPropertyElement(setting.getKey());
 
-        if (property.isEmpty()) {
+        if(property.isEmpty()) {
             event.getChannel().sendMessage("Key not existing").queue();
             return;
-        } else if (!property.get().isJsonArray()) {
+        } else if(!property.get().isJsonArray()) {
             event.getChannel().sendMessage("To edit a single parameter please use " + prefix + "config edit [key] [value]").queue();
             return;
         }
@@ -148,7 +148,7 @@ public class ConfigCommand extends AbstractCommand {
         ((JsonArray) property.get()).add(setting.getValue());
 
         boolean saved = save(event);
-        if (saved) {
+        if(saved) {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(0x1efa88)
                     .setTitle(getName())
@@ -167,10 +167,10 @@ public class ConfigCommand extends AbstractCommand {
 
         Optional<JsonElement> property = conf.getPropertyElement(setting.getKey());
 
-        if (property.isEmpty()) {
+        if(property.isEmpty()) {
             event.getChannel().sendMessage("Key not existing").queue();
             return;
-        } else if (property.get().isJsonArray()) {
+        } else if(property.get().isJsonArray()) {
             event.getChannel().sendMessage("To edit a list please use " + prefix + "config add/remove [key] [value]").queue();
             return;
         }
@@ -178,7 +178,7 @@ public class ConfigCommand extends AbstractCommand {
         conf.setProperty(setting.getKey(), setting.getValue());
 
         boolean saved = save(event);
-        if (saved) {
+        if(saved) {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(0x1efa88)
                     .setTitle(getName())
@@ -213,7 +213,7 @@ public class ConfigCommand extends AbstractCommand {
         try {
             conf.saveModifications();
             return true;
-        } catch (IOException e) {
+        } catch(IOException e) {
             e.printStackTrace();
             event.getChannel().sendMessage("An internal failure occurred. The config was not saved.").queue();
             return false;
@@ -232,7 +232,7 @@ public class ConfigCommand extends AbstractCommand {
                 config.getPropertyOrDefault("sentryDns")
         );
 
-        for (String secret : secrets) source = source.replaceAll(secret, "[SECRET]");
+        for(String secret : secrets) source = source.replaceAll(secret, "[SECRET]");
         return source;
     }
 

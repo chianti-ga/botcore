@@ -11,7 +11,7 @@ public abstract class AbstractSubsystem extends ListenerAdapter implements ISubs
 
     @Override
     public final boolean isEnabled() {
-        if (isDefaultStateOverridden) {
+        if(isDefaultStateOverridden) {
             return enabled;
         }
         return isEnabledByDefault();
@@ -19,7 +19,7 @@ public abstract class AbstractSubsystem extends ListenerAdapter implements ISubs
 
     @Override
     public void setEnabled(boolean isEnabled) {
-        if (this.isEnabled() == isEnabled) return;
+        if(this.isEnabled() == isEnabled) return;
         logger.info(isEnabled ? "Enabled " : "Disabled " + "subsystem " + this.getName() + ".");
         enabled = isEnabled;
         isDefaultStateOverridden = true;

@@ -19,13 +19,13 @@ public class CollectionUtils {
     }
 
     public static <T> void sendListAsMessage(Collection<T> collection, TextChannel channel) {
-        if (collection.isEmpty()) {
+        if(collection.isEmpty()) {
             logger.warn("Provided map is empty");
             return;
         }
         StringBuilder sb = new StringBuilder();
         collection.forEach(object -> {
-            if (sb.length() + object.toString().length() >= 2000) {
+            if(sb.length() + object.toString().length() >= 2000) {
                 channel.sendMessage(sb.toString()).queue();
                 sb.delete(0, sb.length());
             }
@@ -35,14 +35,14 @@ public class CollectionUtils {
     }
 
     public static <K, V> void sendListAsMessage(Map<K, V> map, TextChannel channel) {
-        if (map.isEmpty()) {
+        if(map.isEmpty()) {
             logger.warn("Provided map is empty");
             return;
         }
         StringBuilder sb = new StringBuilder();
         map.forEach((key, value) -> {
             String tmp = key + ": " + value;
-            if (sb.length() + tmp.length() >= 2000) {
+            if(sb.length() + tmp.length() >= 2000) {
                 channel.sendMessage(sb.toString()).queue();
                 sb.delete(0, sb.length());
             }

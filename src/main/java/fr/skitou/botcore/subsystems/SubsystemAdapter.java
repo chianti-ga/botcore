@@ -31,11 +31,6 @@ public class SubsystemAdapter implements EventListener {
         logger.info("Enabled subsystems: \n" + enabledSubsystemStringJoiner);
     }
 
-    public static SubsystemAdapter getInstance() {
-        if (instance == null) instance = new SubsystemAdapter();
-        return instance;
-    }
-
     /**
      * Dispatch {@link GenericEvent GenericEvents} to all {@link ISubsystem#isEnabled() enabled} {@link ISubsystem ISubsystems}.
      */
@@ -44,7 +39,7 @@ public class SubsystemAdapter implements EventListener {
         subsystems.stream().filter(ISubsystem::isEnabled).forEach(subsystem -> {
             try {
                 subsystem.onEvent(event);
-            } catch (Exception exception) {
+            } catch(Exception exception) {
                 logger.error("Subsystem {} threw a {}: {}", subsystem.getName(),
                         exception.getClass().getSimpleName(), exception.getMessage());
 
@@ -53,5 +48,10 @@ public class SubsystemAdapter implements EventListener {
                 Sentry.captureException(exception);
             }
         });
+    }
+
+    public static SubsystemAdapter getInstance() {
+        if(instance == null) instance = new SubsystemAdapter();
+        return instance;
     }
 }

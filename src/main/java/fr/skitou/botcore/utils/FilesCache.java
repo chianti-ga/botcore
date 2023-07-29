@@ -33,7 +33,7 @@ public class FilesCache {
 
 
     public FilesCache() {
-        if (!cacheFolder.exists()) //noinspection ResultOfMethodCallIgnored
+        if(!cacheFolder.exists()) //noinspection ResultOfMethodCallIgnored
             cacheFolder.mkdirs();
         scan();
         scanExecutor.scheduleWithFixedDelay(this::scan, 0, 5, TimeUnit.MINUTES);
@@ -41,12 +41,12 @@ public class FilesCache {
     }
 
     private void scan() {
-        try (Stream<Path> walk = Files.walk(cacheFolder.toPath())) {
+        try(Stream<Path> walk = Files.walk(cacheFolder.toPath())) {
             cachedFiles = walk.filter(Files::isRegularFile).map(Path::toFile).collect(Collectors.toList());
             cachedFiles.forEach(File::deleteOnExit); // Delete them even if the bot crash or suddenly stop
             //noinspection ResultOfMethodCallIgnored
             ignoreList.forEach(String::toLowerCase);
-        } catch (IOException e) {
+        } catch(IOException e) {
             e.printStackTrace();
         }
     }
@@ -58,7 +58,7 @@ public class FilesCache {
         AtomicInteger fileCount = new AtomicInteger();
         logger.info("Performing cache cleanup...");
         cachedFiles.forEach(file -> {
-            if (file.exists() && !ignoreList.contains(file.getName().toLowerCase())) {
+            if(file.exists() && !ignoreList.contains(file.getName().toLowerCase())) {
                 fileCount.getAndIncrement();
                 //noinspection ResultOfMethodCallIgnored
                 file.delete();

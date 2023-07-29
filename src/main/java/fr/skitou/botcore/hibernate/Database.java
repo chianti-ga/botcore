@@ -32,7 +32,7 @@ public class Database {
     }
 
     public static SessionFactory getFactory() {
-        if (factory == null) init();
+        if(factory == null) init();
         return factory;
     }
 
@@ -46,7 +46,7 @@ public class Database {
 
             final ServiceRegistry registry = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
             factory = cfg.buildSessionFactory(registry);
-        } catch (HibernateException | NullPointerException e) {
+        } catch(HibernateException | NullPointerException e) {
             e.printStackTrace();
             logger.error("Error {}: {}", e.getClass().getSimpleName(), e.getMessage());
         }
@@ -77,12 +77,12 @@ public class Database {
      */
     @SafeVarargs
     public static <T> void saveOrUpdate(T... entities) {
-        if (entities.length == 0 || !isEntity(entities[0])) return;
-        try (Session s = getFactory().openSession()) {
+        if(entities.length == 0 || !isEntity(entities[0])) return;
+        try(Session s = getFactory().openSession()) {
             s.beginTransaction();
             Arrays.stream(entities).forEach(s::merge);
             s.getTransaction().commit();
-        } catch (Exception e) {
+        } catch(Exception e) {
             logger.error("An error happened while trying to saveOrUpdate a {}: {}",
                     entities[0].getClass().getSimpleName(), e.getClass().getSimpleName());
             e.printStackTrace();
@@ -91,13 +91,13 @@ public class Database {
 
     @SafeVarargs
     public static <T> boolean delete(T... entities) {
-        if (entities.length == 0 || !isEntity(entities[0])) return false;
-        try (Session s = getFactory().openSession()) {
+        if(entities.length == 0 || !isEntity(entities[0])) return false;
+        try(Session s = getFactory().openSession()) {
             s.beginTransaction();
             Stream.of(entities).forEach(s::remove);
             s.getTransaction().commit();
             return true;
-        } catch (Exception e) {
+        } catch(Exception e) {
             logger.error("An error happened while trying to delete a {}: {}",
                     entities[0].getClass().getSimpleName(), e.getClass().getSimpleName());
             e.printStackTrace();
@@ -114,13 +114,13 @@ public class Database {
      * @return An optional containing the object found in database.
      */
     public static <T> Optional<T> getById(Class<T> klass, Serializable id) {
-        if (!isEntity(klass)) return Optional.empty();
-        try (Session s = getFactory().openSession()) {
+        if(!isEntity(klass)) return Optional.empty();
+        try(Session s = getFactory().openSession()) {
             s.beginTransaction();
             Optional<T> o = Optional.ofNullable(s.get(klass, id));
             s.getTransaction().commit();
             return o;
-        } catch (Exception e) {
+        } catch(Exception e) {
             logger.error("An error happened while trying to get a {}: {}", klass.getSimpleName(), e.getClass().getSimpleName());
             e.printStackTrace();
             return Optional.empty();
@@ -136,8 +136,8 @@ public class Database {
      * @return A collection of the found entities, can be empty.
      */
     public static <T> Collection<T> getAll(Class<T> klass) {
-        if (!isEntity(klass)) return Collections.emptySet();
-        try (Session s = getFactory().openSession()) {
+        if(!isEntity(klass)) return Collections.emptySet();
+        try(Session s = getFactory().openSession()) {
             return s.createQuery("SELECT a FROM " + klass.getSimpleName() + " a", klass).getResultList();
         }
     }
@@ -152,8 +152,8 @@ public class Database {
      */
     @SafeVarargs
     public static <T> long count(Class<T> klass, BiFunction<CriteriaBuilder, Root<T>, Predicate>... where) {
-        if (!isEntity(klass)) return 0;
-        try (Session s = getFactory().openSession()) {
+        if(!isEntity(klass)) return 0;
+        try(Session s = getFactory().openSession()) {
             CriteriaBuilder builder = s.getCriteriaBuilder();
             CriteriaQuery<Long> query = builder.createQuery(long.class);
             Predicate[] wheres = Arrays.stream(where)
@@ -169,7 +169,7 @@ public class Database {
     }
 
     public static <T> Optional<T> getRand(Class<T> klass) {
-        if (!isEntity(klass) || isEmpty(klass)) return Optional.empty();
+        if(!isEntity(klass) || isEmpty(klass)) return Optional.empty();
         int index = new Random().nextInt((int) Database.count(klass));
         return getAll(klass).stream().skip(index).findFirst();
     }
