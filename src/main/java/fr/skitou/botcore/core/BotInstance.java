@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.slf4j.Logger;
@@ -56,7 +57,7 @@ public class BotInstance {
             HashSet<ISlashCommand> slashCommands = CommandAdapter.getInstance().getSlashcommands();
 
             jda.getGuilds().forEach(guild -> {
-                var a = slashCommands.stream()
+                Set<SlashCommandData> a = slashCommands.stream()
                         .map(iSlashCommand ->
                                 Commands.slash(iSlashCommand.getName().toLowerCase(), iSlashCommand.getHelp())
                                         .addOptions(iSlashCommand.getOptionData())
