@@ -32,16 +32,14 @@ jobs:
       - name: Run chmod to make gradlew executable
         run: chmod +x ./gradlew
 
-      - uses: gradle/gradle-build-action@v2
-        with:
-          gradle-version: wrapper
-
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:
+          gradle-version: wrapper
           arguments: build
 
       - name: Publish to repo
         uses: gradle/gradle-build-action@v2
         with:
+          gradle-version: wrapper
           arguments: publish \ -PreposiliteRepositoryReleasesUsername=${{ secrets.REP_TOKEN }} \ -PreposiliteRepositoryReleasesPassword=${{ secrets.REP_PASS }}
