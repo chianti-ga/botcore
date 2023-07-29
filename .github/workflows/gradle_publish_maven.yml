@@ -28,11 +28,12 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Force git install form auto-versioning
-        run: sudo apt-get install -y git
 
       - name: Run chmod to make gradlew executable
         run: chmod +x ./gradlew
+
+      - name: Git debug
+        run: git describe --tags
 
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
