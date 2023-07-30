@@ -45,7 +45,7 @@ public class ReflectionUtils {
 
     private static <T> HashSet<T> getSubTypesInstance(Class<T> superClass, String[] targetPackages) {
         HashSet<T> subTypes = new HashSet<>();
-        //Search all classes extending from T, but exclude Interfaces and Abstract classes.
+        // Search all classes extending from T, but exclude Interfaces and Abstract classes.
         Set<Class<? extends T>> subTypesClasses = new HashSet<>(new Reflections(new ConfigurationBuilder()
                 .setUrls(Stream.of(targetPackages).flatMap(targetPackage -> ClasspathHelper.forPackage(targetPackage).stream()).collect(Collectors.toSet()))
                 .setScanners(Scanners.SubTypes))
@@ -53,20 +53,23 @@ public class ReflectionUtils {
                 .filter(aClass -> !(Modifier.isAbstract(aClass.getModifiers()) || Modifier.isInterface(aClass.getModifiers())))
                 .collect(Collectors.toSet());
 
-        //We get an instance from each class.
+        // We get an instance from each class.
         subTypesClasses.forEach(subTypeClass -> {
             try {
                 subTypeClass.getConstructor().setAccessible(true);
                 T subType = subTypeClass.getConstructor().newInstance();
-                subTypes.add(subType);
-                //Debug
-                logger.debug(subType.toString());
-            } catch(ExceptionInInitializerError exceptionInInitializerError) {
-                logger.error("An exception occurred during the initialisation of class " + subTypeClass.getName() + ".");
+                // Check if the instance is already present before adding.
+                if (!subTypes.contains(subType)) {
+                    subTypes.add(subType);
+                    // Debug
+                    logger.debug(subType.toString());
+                }
+            } catch (ExceptionInInitializerError exceptionInInitializerError) {
+                logger.error("An exception occurred during the initialization of class " + subTypeClass.getName() + ".");
                 exceptionInInitializerError.getCause().printStackTrace();
-            } catch(InstantiationException | IllegalAccessException | NullPointerException | NoSuchMethodException |
-                    InvocationTargetException e) {
-                logger.error("An exception occurred during the initialisation of class " + subTypeClass.getName() + ".");
+            } catch (InstantiationException | IllegalAccessException | NullPointerException | NoSuchMethodException |
+                     InvocationTargetException e) {
+                logger.error("An exception occurred during the initialization of class " + subTypeClass.getName() + ".");
                 e.printStackTrace();
             }
         });
