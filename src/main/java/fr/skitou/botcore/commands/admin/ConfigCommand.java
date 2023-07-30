@@ -7,6 +7,7 @@ import fr.skitou.botcore.commands.CommandReceivedEvent;
 import fr.skitou.botcore.core.BotInstance;
 import fr.skitou.botcore.core.Config;
 import fr.skitou.botcore.utils.IsSenderAllowed;
+import io.sentry.Sentry;
 import lombok.Getter;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -217,6 +218,10 @@ public class ConfigCommand extends AbstractCommand {
         } catch(IOException e) {
             e.printStackTrace();
             event.getChannel().sendMessage("An internal failure occurred. The config was not saved.").queue();
+
+            logger.error("Config threw while saving, {}: {}",
+                    e.getClass().getSimpleName(), e.getMessage());
+            Sentry.captureException(e);
             return false;
         }
     }
