@@ -96,7 +96,7 @@ public class SubsystemCommand extends AbstractCommand {
     private void listSubsystemSubCommand(CommandReceivedEvent event) {
         StringBuilder jdaBuilder = new StringBuilder();
         EmbedBuilder builder = new EmbedBuilder();
-        builder.setTitle("JavaBot Subsystems").setDescription("JavaBot subsystem status");
+        builder.setTitle("Subsystems").setDescription("Subsystem status");
         SubsystemAdapter.getSubsystems().stream().sorted(Comparator.comparing(ISubsystem::getName)).forEach(iSubsystem -> builder.addField((iSubsystem.isEnabled() ? "🟢 " : "🔴 ") + iSubsystem.getName(), iSubsystem.getDescription(), false)
         );
         BotInstance.getJda().getRegisteredListeners().forEach(o -> jdaBuilder.append(o.getClass().getSimpleName()).append("\n"));
