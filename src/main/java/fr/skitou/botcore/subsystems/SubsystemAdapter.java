@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import java.util.HashSet;
 import java.util.StringJoiner;
 
+@Getter
 public class SubsystemAdapter implements EventListener {
-    @Getter
     private static final HashSet<ISubsystem> subsystems = new HashSet<>();
     private static final Logger logger = LoggerFactory.getLogger(SubsystemAdapter.class);
     private static SubsystemAdapter instance;

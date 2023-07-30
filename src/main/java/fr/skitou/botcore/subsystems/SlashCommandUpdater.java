@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class SlashCommandUpdater extends AbstractSubsystem{
+public class SlashCommandUpdater extends AbstractSubsystem {
     @Override
     public @NotNull String getName() {
         return getClass().getName();

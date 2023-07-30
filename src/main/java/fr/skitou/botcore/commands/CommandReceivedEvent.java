@@ -1,12 +1,14 @@
 package fr.skitou.botcore.commands;
 
 
+import lombok.Getter;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 
 
+@Getter
 public class CommandReceivedEvent extends MessageReceivedEvent {
     private final String command;
     private final LinkedList<String> args;
@@ -20,15 +22,4 @@ public class CommandReceivedEvent extends MessageReceivedEvent {
         this.messageReceivedEvent = event;
     }
 
-    public String getCommand() {
-        return command;
-    }
-
-    public LinkedList<String> getArgs() {
-        return args;
-    }
-
-    public MessageReceivedEvent getMessageReceivedEvent() {
-        return messageReceivedEvent;
-    }
 }

@@ -33,13 +33,13 @@ public class CommandAdapter extends ListenerAdapter {
     public CommandAdapter() {
         commands.addAll(ReflectionUtils.getSubTypesInstance(ICommand.class));
         commands.forEach(iCommand -> System.out.println(iCommand.getCommand()));
-        System.out.println("");
+        System.out.println();
         commands.addAll(ReflectionUtils.getSubTypesInstance(ICommand.class, BotInstance.classicCommandPackage));
         commands.forEach(iCommand -> System.out.println(iCommand.getCommand()));
-        System.out.println("");
+        System.out.println();
         commands.addAll(ReflectionUtils.getSubTypesInstance(ICommand.class, BotInstance.subsystemPackage));
         commands.forEach(iCommand -> System.out.println(iCommand.getCommand()));
-        System.out.println("");
+        System.out.println();
 
         StringBuilder infoBuilder = new StringBuilder();
         infoBuilder.append("Detected commands: ");
@@ -135,7 +135,7 @@ public class CommandAdapter extends ListenerAdapter {
             command.onCommandReceived(event);
             logger.info(event.getAuthor().getName() + "(" + event.getAuthor().getId() + ")" + " issued the " + event.getCommand() + " command.");
         } catch(Exception exception) {
-            event.getChannel().sendMessage("Command failed!\n`The error have been reported to the Java Development Team.`").queue();
+            event.getChannel().sendMessage("Command failed!\n`The error have been reported!`").queue();
 
             logger.error("Command {} threw a {}: {}", command.getCommand(),
                     exception.getClass().getSimpleName(), exception.getMessage());

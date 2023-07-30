@@ -7,6 +7,7 @@ import fr.skitou.botcore.commands.CommandReceivedEvent;
 import fr.skitou.botcore.core.BotInstance;
 import fr.skitou.botcore.core.Config;
 import fr.skitou.botcore.utils.IsSenderAllowed;
+import lombok.Getter;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.jetbrains.annotations.NotNull;
@@ -239,6 +240,7 @@ public class ConfigCommand extends AbstractCommand {
     /**
      * Split arguments in command received to a key and value
      */
+    @Getter
     private static class Setting {
         private final String key;
         private final String value;
@@ -252,13 +254,6 @@ public class ConfigCommand extends AbstractCommand {
             this.value = sj.toString();
         }
 
-        public String getKey() {
-            return this.key;
-        }
-
-        public String getValue() {
-            return this.value;
-        }
     }
 
 }

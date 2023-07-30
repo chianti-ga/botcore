@@ -16,10 +16,10 @@ import java.nio.file.Files;
 import java.util.Objects;
 import java.util.Optional;
 
+@Getter
 public enum Config {
     CONFIG;
 
-    @Getter
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
