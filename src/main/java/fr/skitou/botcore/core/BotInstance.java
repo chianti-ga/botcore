@@ -5,6 +5,7 @@ import fr.skitou.botcore.slashcommand.ISlashCommand;
 import fr.skitou.botcore.subsystems.SubsystemAdapter;
 import fr.skitou.botcore.utils.FilesCache;
 import fr.skitou.botcore.utils.reporter.SentryManager;
+import io.sentry.Sentry;
 import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -83,16 +84,21 @@ public class BotInstance {
             logger.error("ERROR: Login failed: " + e.getMessage() + ":" + Arrays.toString(e.getStackTrace()) + "\n Check the token or retry later.");
             Runtime.getRuntime().exit(2);
         }
+        SentryManager.getInstance();
 
         //Run once injection point
         //Only used for test purposes.
         try {
             jda.awaitReady();
             runWhenReady();
-        } catch(InterruptedException ignored) {
-        }
+        } catch(InterruptedException e) {
+            logger.error("Runnable threw a {}: {}",
+                    e.getClass().getSimpleName(), e.getMessage());
 
-        SentryManager.getInstance();
+            e.printStackTrace();
+
+            Sentry.captureException(e);
+        }
 
 
         Manifest manifest = null;
