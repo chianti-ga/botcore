@@ -20,7 +20,6 @@ import java.util.Set;
 
 public class CommandAdapter extends ListenerAdapter {
     private static CommandAdapter instance;
-    public final String prefix = ICommand.prefix;
     private final Logger logger = LoggerFactory.getLogger(CommandAdapter.class);
     @Getter
     private final HashSet<ISlashCommand> slashcommands = new HashSet<>();
@@ -32,27 +31,22 @@ public class CommandAdapter extends ListenerAdapter {
      */
     public CommandAdapter() {
         commands.addAll(ReflectionUtils.getSubTypesInstance(ICommand.class));
-        commands.forEach(iCommand -> System.out.println(iCommand.getCommand()));
-        System.out.println();
         commands.addAll(ReflectionUtils.getSubTypesInstance(ICommand.class, BotInstance.classicCommandPackage));
-        commands.forEach(iCommand -> System.out.println(iCommand.getCommand()));
-        System.out.println();
         commands.addAll(ReflectionUtils.getSubTypesInstance(ICommand.class, BotInstance.subsystemPackage));
-        commands.forEach(iCommand -> System.out.println(iCommand.getCommand()));
-        System.out.println();
+
 
         StringBuilder infoBuilder = new StringBuilder();
         infoBuilder.append("Detected commands: ");
-        long total = commands.stream().peek(command -> infoBuilder.append("\n").append(command.getName())).count();
-        infoBuilder.append("Total: ").append(total);
-        logger.info(infoBuilder + "\n");
+        commands.forEach(command -> infoBuilder.append("\n").append(command.getName()));
+        infoBuilder.append("Total: ").append(commands.size());
+        logger.info(infoBuilder.toString());
 
         slashcommands.addAll(ReflectionUtils.getSubTypesInstance(ISlashCommand.class, BotInstance.slashCommandPackage));
 
         infoBuilder.setLength(0);
         infoBuilder.append("Detected Slash commands: ");
         infoBuilder.append("Total: ").append(slashcommands.size());
-        logger.info(infoBuilder + "\n");
+        logger.info(infoBuilder.toString());
     }
 
     /**
@@ -83,7 +77,7 @@ public class CommandAdapter extends ListenerAdapter {
         }
 
         // Only consider messages starting with the prefix.
-        if(!(event.getMessage().getContentDisplay().startsWith(prefix))) return;
+        if(!(event.getMessage().getContentDisplay().startsWith(ICommand.prefix))) return;
 
         // Avoid self-loops
         if(event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) return;
@@ -107,7 +101,7 @@ public class CommandAdapter extends ListenerAdapter {
                 .filter(matchedCommand ->
                         matchedCommand.isSenderAllowed().test(event.getMember()) ||
                                 IsSenderAllowed.BotAdmin.test(event.getMember())) //Hardcoded bypass for Bot admins.
-                .limit(1) //TODO: Find a way to log an error if multiple commands match.
+                .limit(1) // Limit to one matched commands
                 .forEach(command -> dispatchEvent(command, event));
     }
 

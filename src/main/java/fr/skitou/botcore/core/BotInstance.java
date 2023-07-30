@@ -43,7 +43,7 @@ public class BotInstance {
     private static String coreVersion;
 
 
-    public BotInstance(BotInstanceBuilder builder) {
+    private BotInstance(BotInstanceBuilder builder) {
         classicCommandPackage = builder.classicCommandPackage;
         slashCommandPackage = builder.slashCommandPackage;
         subsystemPackage = builder.subsystemPackage;
@@ -94,19 +94,15 @@ public class BotInstance {
         } catch(InterruptedException e) {
             logger.error("Runnable threw a {}: {}",
                     e.getClass().getSimpleName(), e.getMessage());
-
-            e.printStackTrace();
-
             Sentry.captureException(e);
+            Thread.currentThread().interrupt();
         }
 
-
-        Manifest manifest = null;
         try {
-            manifest = new Manifest(ClassLoader.getSystemResourceAsStream("META-INF/MANIFEST.MF"));
+            Manifest manifest = new Manifest(ClassLoader.getSystemResourceAsStream("META-INF/MANIFEST.MF"));
             coreVersion = manifest.getMainAttributes().getValue("BotCore-Version");
         } catch(IOException e) {
-            throw new RuntimeException(e);
+            logger.error("Can't get BotCore-Version from jar manifest (normal on dev env).");
         }
 
     }

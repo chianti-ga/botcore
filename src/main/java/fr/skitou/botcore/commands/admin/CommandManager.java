@@ -101,8 +101,6 @@ public class CommandManager extends AbstractCommand {
         CommandAdapter.getInstance().getCommands().stream().sorted(Comparator.comparing(ICommand::getName)).forEach(iCommand ->
                 builder.addField((iCommand.isEnabled() ? "🟢 " : "🔴 ") + iCommand.getName(), iCommand.getHelp(), false)
         );
-
-        CommandAdapter.getInstance().getCommands().forEach(iCommand -> System.out.println(iCommand.getName()));
         event.getChannel().sendMessageEmbeds(builder.build()).queue();
     }
 }
