@@ -53,7 +53,7 @@ public abstract class AbstractSlashCommand implements ISlashCommand {
     public @NotNull Set<SubcommandData> getSubcommandDatas() {
         return subCommands.stream()
                 .filter(iSubCommand -> iSubCommand.CommandClassName().equalsIgnoreCase(this.getClass().getName()))
-                .map(iSubCommand -> new SubcommandData(iSubCommand.getName(), iSubCommand.getHelpDescription()).addOptions(iSubCommand.getOptionData()))
+                .map(iSubCommand -> new SubcommandData(iSubCommand.getName(), iSubCommand.getHelp()).addOptions(iSubCommand.getOptionData()))
                 .collect(Collectors.toSet());
     }
 }
