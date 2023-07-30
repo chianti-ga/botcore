@@ -1,6 +1,7 @@
 package fr.skitou.botcore.subsystems;
 
-import fr.skitou.botcore.commands.ICommand;
+import fr.skitou.botcore.commands.classic.ICommand;
+import fr.skitou.botcore.utils.Children;
 import net.dv8tion.jda.api.hooks.EventListener;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,6 +13,7 @@ import java.util.List;
  * Subsystems are components that can be enabled or disabled independently to control their behavior.
  * This interface extends {@link EventListener} to allow handling of events related to the subsystem.
  */
+@Children(targetPackages = "fr.skitou.botcore.subsystems.internal")
 public interface ISubsystem extends EventListener {
 
     /**

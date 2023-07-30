@@ -1,7 +1,7 @@
-package fr.skitou.botcore.commands.admin;
+package fr.skitou.botcore.commands.classic.admin;
 
-import fr.skitou.botcore.commands.AbstractCommand;
-import fr.skitou.botcore.commands.CommandReceivedEvent;
+import fr.skitou.botcore.commands.classic.AbstractCommand;
+import fr.skitou.botcore.commands.classic.CommandReceivedEvent;
 import fr.skitou.botcore.utils.QuickColors;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.jetbrains.annotations.NotNull;

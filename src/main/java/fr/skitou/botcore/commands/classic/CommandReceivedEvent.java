@@ -1,4 +1,4 @@
-package fr.skitou.botcore.commands;
+package fr.skitou.botcore.commands.classic;
 
 
 import lombok.Getter;

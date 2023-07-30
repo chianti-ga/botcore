@@ -1,4 +1,4 @@
-package fr.skitou.botcore.commands;
+package fr.skitou.botcore.commands.classic;
 
 
 import fr.skitou.botcore.core.BotInstance;
@@ -21,7 +21,7 @@ import java.util.function.Predicate;
  * @see AbstractCommand
  */
 @Children(targetPackages = {
-        "fr.skitou.botcore.commands",
+        "fr.skitou.botcore.commands.classic",
         "fr.skitou.botcore.subsystems"
 })
 public interface ICommand {

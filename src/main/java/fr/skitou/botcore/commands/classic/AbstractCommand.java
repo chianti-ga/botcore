@@ -1,4 +1,4 @@
-package fr.skitou.botcore.commands;
+package fr.skitou.botcore.commands.classic;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
