@@ -35,7 +35,7 @@ public class SubsystemCommand extends AbstractCommand {
 
     @Override
     public @NotNull String getHelp() {
-        return prefix + getCommand() + " (list|enable|disable) (subsystem)";
+        return PREFIX + getCommand() + " (list|enable|disable) (subsystem)";
     }
 
     @Override
@@ -45,19 +45,19 @@ public class SubsystemCommand extends AbstractCommand {
 
     @Override
     public void onCommandReceived(CommandReceivedEvent event) {
-        if (event.getArgs().isEmpty()) {
+        if(event.getArgs().isEmpty()) {
             event.getChannel().sendMessage(getHelp()).queue();
             return;
         }
 
-        switch (event.getArgs().get(0).toLowerCase()) {
+        switch(event.getArgs().get(0).toLowerCase()) {
             case "list" -> listSubsystemSubCommand(event);
             case "enable" -> {
-                if (event.getArgs().size() < 2) {
+                if(event.getArgs().size() < 2) {
                     event.getChannel().sendMessage(getHelp()).queue();
                     return;
                 }
-                if (event.getArgs().get(1).equalsIgnoreCase("all")) {
+                if(event.getArgs().get(1).equalsIgnoreCase("all")) {
                     SubsystemAdapter.getSubsystems().stream()
                             .peek(iSubsystem -> sendMessage(event, "Enabling " + iSubsystem.getName()))
                             .forEach(ISubsystem::enable);
@@ -70,11 +70,11 @@ public class SubsystemCommand extends AbstractCommand {
                 listSubsystemSubCommand(event);
             }
             case "disable" -> {
-                if (event.getArgs().size() < 2) {
+                if(event.getArgs().size() < 2) {
                     event.getChannel().sendMessage(getHelp()).queue();
                     return;
                 }
-                if (event.getArgs().get(1).equalsIgnoreCase("all")) {
+                if(event.getArgs().get(1).equalsIgnoreCase("all")) {
                     SubsystemAdapter.getSubsystems().stream()
                             .peek(iSubsystem -> logger.info("Disabling " + iSubsystem.getName()))
                             .forEach(ISubsystem::disable);
@@ -96,7 +96,7 @@ public class SubsystemCommand extends AbstractCommand {
     private void listSubsystemSubCommand(CommandReceivedEvent event) {
         StringBuilder jdaBuilder = new StringBuilder();
         EmbedBuilder builder = new EmbedBuilder();
-        builder.setTitle("JavaBot Subsystems").setDescription("JavaBot subsystem status");
+        builder.setTitle("Subsystems").setDescription("Subsystem status");
         SubsystemAdapter.getSubsystems().stream().sorted(Comparator.comparing(ISubsystem::getName)).forEach(iSubsystem -> builder.addField((iSubsystem.isEnabled() ? "🟢 " : "🔴 ") + iSubsystem.getName(), iSubsystem.getDescription(), false)
         );
         BotInstance.getJda().getRegisteredListeners().forEach(o -> jdaBuilder.append(o.getClass().getSimpleName()).append("\n"));

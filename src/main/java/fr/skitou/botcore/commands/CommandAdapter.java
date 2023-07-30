@@ -20,7 +20,6 @@ import java.util.Set;
 
 public class CommandAdapter extends ListenerAdapter {
     private static CommandAdapter instance;
-    public final String prefix = ICommand.prefix;
     private final Logger logger = LoggerFactory.getLogger(CommandAdapter.class);
     @Getter
     private final HashSet<ISlashCommand> slashcommands = new HashSet<>();
@@ -32,27 +31,22 @@ public class CommandAdapter extends ListenerAdapter {
      */
     public CommandAdapter() {
         commands.addAll(ReflectionUtils.getSubTypesInstance(ICommand.class));
-        commands.forEach(iCommand -> System.out.println(iCommand.getCommand()));
-        System.out.println("");
         commands.addAll(ReflectionUtils.getSubTypesInstance(ICommand.class, BotInstance.classicCommandPackage));
-        commands.forEach(iCommand -> System.out.println(iCommand.getCommand()));
-        System.out.println("");
         commands.addAll(ReflectionUtils.getSubTypesInstance(ICommand.class, BotInstance.subsystemPackage));
-        commands.forEach(iCommand -> System.out.println(iCommand.getCommand()));
-        System.out.println("");
+
 
         StringBuilder infoBuilder = new StringBuilder();
         infoBuilder.append("Detected commands: ");
-        long total = commands.stream().peek(command -> infoBuilder.append("\n").append(command.getName())).count();
-        infoBuilder.append("Total: ").append(total);
-        logger.info(infoBuilder + "\n");
+        commands.forEach(command -> infoBuilder.append("\n").append(command.getName()));
+        infoBuilder.append("Total: ").append(commands.size());
+        logger.info(infoBuilder.toString());
 
         slashcommands.addAll(ReflectionUtils.getSubTypesInstance(ISlashCommand.class, BotInstance.slashCommandPackage));
 
         infoBuilder.setLength(0);
         infoBuilder.append("Detected Slash commands: ");
         infoBuilder.append("Total: ").append(slashcommands.size());
-        logger.info(infoBuilder + "\n");
+        logger.info(infoBuilder.toString());
     }
 
     /**
@@ -63,11 +57,6 @@ public class CommandAdapter extends ListenerAdapter {
     public CommandAdapter(ICommand... listeners) {
         this.commands = new HashSet<>();
         this.commands.addAll(Set.of(listeners));
-    }
-
-    public static CommandAdapter getInstance() {
-        if (instance == null) instance = new CommandAdapter();
-        return instance;
     }
 
     /**
@@ -83,18 +72,18 @@ public class CommandAdapter extends ListenerAdapter {
         // Since CommandReceivedEvent is a subtype of GuildMessageReceivedEvent,
         // we unfortunately receive our own generated event.
         // This is bad and WILL create an infinite loop if we don't catch it.
-        if (event instanceof CommandReceivedEvent) {
+        if(event instanceof CommandReceivedEvent) {
             return;
         }
 
-        // Only consider messages starting with the prefix.
-        if (!(event.getMessage().getContentDisplay().startsWith(prefix))) return;
+        // Only consider messages starting with the PREFIX.
+        if(!(event.getMessage().getContentDisplay().startsWith(ICommand.PREFIX))) return;
 
         // Avoid self-loops
-        if (event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) return;
+        if(event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) return;
 
         // Avoid bots loops.
-        if (event.getAuthor().isBot()
+        if(event.getAuthor().isBot()
                 && Objects.equals(Config.CONFIG.getProperty("commands.allowNonUser").orElse("false"), "true")) {
             return;
         }
@@ -112,7 +101,7 @@ public class CommandAdapter extends ListenerAdapter {
                 .filter(matchedCommand ->
                         matchedCommand.isSenderAllowed().test(event.getMember()) ||
                                 IsSenderAllowed.BotAdmin.test(event.getMember())) //Hardcoded bypass for Bot admins.
-                .limit(1) //TODO: Find a way to log an error if multiple commands match.
+                .limit(1) // Limit to one matched commands
                 .forEach(command -> dispatchEvent(command, event));
     }
 
@@ -126,10 +115,10 @@ public class CommandAdapter extends ListenerAdapter {
     private boolean doesCommandMatchString(ICommand commandToTest, String stringToTest) {
         try {
             boolean matchesCommand = commandToTest.getCommand().equalsIgnoreCase(stringToTest);
-            if (!matchesCommand)
+            if(!matchesCommand)
                 return commandToTest.getAliases().stream().anyMatch(alias -> alias.equalsIgnoreCase(stringToTest));
             else return true;
-        } catch (NullPointerException npe) {
+        } catch(NullPointerException npe) {
             logger.error("Error: " + commandToTest.getClass() + " #getCommand or #getAliases returns null ! THIS IS A CONTRACT VIOLATION!!!");
             return false;
         }
@@ -139,8 +128,8 @@ public class CommandAdapter extends ListenerAdapter {
         try {
             command.onCommandReceived(event);
             logger.info(event.getAuthor().getName() + "(" + event.getAuthor().getId() + ")" + " issued the " + event.getCommand() + " command.");
-        } catch (Exception exception) {
-            event.getChannel().sendMessage("Command failed!\n`The error have been reported to the Java Development Team.`").queue();
+        } catch(Exception exception) {
+            event.getChannel().sendMessage("Command failed!\n`The error have been reported!`").queue();
 
             logger.error("Command {} threw a {}: {}", command.getCommand(),
                     exception.getClass().getSimpleName(), exception.getMessage());
@@ -149,5 +138,10 @@ public class CommandAdapter extends ListenerAdapter {
 
             Sentry.captureException(exception);
         }
+    }
+
+    public static CommandAdapter getInstance() {
+        if(instance == null) instance = new CommandAdapter();
+        return instance;
     }
 }

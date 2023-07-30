@@ -15,16 +15,16 @@ public class MemberUtils {
     public static Member resolveMember(Guild guild, String string) throws NullPointerException {
         string = string.replaceAll("<*@*!*>*", "");
         Member member = guild.retrieveMemberById(string).complete();
-        if (member == null) {
+        if(member == null) {
             member = guild.retrieveMemberById(string).complete();
         }
-        if (member == null) {
+        if(member == null) {
             member = guild.retrieveMembersByPrefix(string, 1).get().get(0);
         }
-        if (member == null) {
+        if(member == null) {
             member = guild.retrieveMemberById(Message.MentionType.USER.getPattern().matcher(string).group()).complete();
         }
-        if (member == null) {
+        if(member == null) {
             throw new NullPointerException("The member cannot be resolved!");
         }
         return member;

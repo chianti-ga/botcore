@@ -1,4 +1,4 @@
-package fr.skitou.botcore.subsystems.test;
+package fr.skitou.botcore.subsystems.internal.test;
 
 import fr.skitou.botcore.core.BotInstance;
 import fr.skitou.botcore.subsystems.AbstractSubsystem;
@@ -9,6 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
+
+/**
+ * For debug only
+ */
 
 @SuppressWarnings("unused") //Automatically discovered via reflection. See SubsystemAdapter.
 public class MPListener extends AbstractSubsystem {
@@ -27,13 +31,13 @@ public class MPListener extends AbstractSubsystem {
 
     @Override
     public boolean isEnabledByDefault() {
-        return true;
+        return false;
     }
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-        if (event.isFromType(ChannelType.PRIVATE)) {
-            if (event.getAuthor().getId().equalsIgnoreCase(BotInstance.getJda().getSelfUser().getId()))
+        if(event.isFromType(ChannelType.PRIVATE)) {
+            if(event.getAuthor().getId().equalsIgnoreCase(BotInstance.getJda().getSelfUser().getId()))
                 logger.info("Sent dm to " + Objects.requireNonNull(event.getChannel().asPrivateChannel().getUser()).getName() + ": " + event.getMessage().getContentDisplay());
             else
                 logger.info("Received dm from " + event.getAuthor().getName() + ": " + event.getMessage().getContentDisplay());

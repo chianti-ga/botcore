@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashSet;
 import java.util.StringJoiner;
 
+@Getter
 public class SubsystemAdapter implements EventListener {
     @Getter
     private static final HashSet<ISubsystem> subsystems = new HashSet<>();
@@ -25,15 +26,10 @@ public class SubsystemAdapter implements EventListener {
 
         StringJoiner subsystemStringJoiner = new StringJoiner("\n");
         subsystems.forEach(subsystem -> subsystemStringJoiner.add(subsystem.getName()));
-        logger.info("Detected subsystems: \n" + subsystemStringJoiner);
+        logger.info("Detected subsystems: \n {}", subsystemStringJoiner);
         StringJoiner enabledSubsystemStringJoiner = new StringJoiner("\n");
         subsystems.stream().filter(ISubsystem::isEnabled).forEach(subsystem -> enabledSubsystemStringJoiner.add(subsystem.getName()));
-        logger.info("Enabled subsystems: \n" + enabledSubsystemStringJoiner);
-    }
-
-    public static SubsystemAdapter getInstance() {
-        if (instance == null) instance = new SubsystemAdapter();
-        return instance;
+        logger.info("Enabled subsystems: \n, {}", enabledSubsystemStringJoiner);
     }
 
     /**
@@ -44,7 +40,7 @@ public class SubsystemAdapter implements EventListener {
         subsystems.stream().filter(ISubsystem::isEnabled).forEach(subsystem -> {
             try {
                 subsystem.onEvent(event);
-            } catch (Exception exception) {
+            } catch(Exception exception) {
                 logger.error("Subsystem {} threw a {}: {}", subsystem.getName(),
                         exception.getClass().getSimpleName(), exception.getMessage());
 
@@ -53,5 +49,10 @@ public class SubsystemAdapter implements EventListener {
                 Sentry.captureException(exception);
             }
         });
+    }
+
+    public static SubsystemAdapter getInstance() {
+        if(instance == null) instance = new SubsystemAdapter();
+        return instance;
     }
 }

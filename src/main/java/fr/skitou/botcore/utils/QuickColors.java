@@ -2,6 +2,11 @@ package fr.skitou.botcore.utils;
 
 import java.awt.*;
 
+/**
+ * Color refs utility class
+ *
+ * @author Skitou
+ */
 public final class QuickColors {
     public static final Color WHITE = new Color(255, 255, 255);
     public static final Color LIGHT_GRAY = new Color(192, 192, 192);

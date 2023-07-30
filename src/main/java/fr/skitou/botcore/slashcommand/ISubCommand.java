@@ -1,6 +1,5 @@
 package fr.skitou.botcore.slashcommand;
 
-import fr.skitou.botcore.commands.ICommand;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
@@ -8,24 +7,27 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
+
 public interface ISubCommand {
     /**
-     * @return The name of the subcommand.
+     * @return The name of the command.
      */
     @NotNull
     String getName();
 
     /**
-     * @return The displayed help of the subcommand. <br>
-     * By default returns {@link ICommand#prefix} + {@link ICommand#getCommand()}.
+     * @return The displayed help of the command. <br>
+     * By default returns "description".
      */
     @NotNull
-    String getHelpDescription();
+    default String getHelp() {
+        return "No description";
+    }
 
     void onSubCommandReceived(SlashCommandInteractionEvent event);
 
     default SubcommandData getSubcommandData() {
-        return new SubcommandData(getName(), getHelpDescription());
+        return new SubcommandData(getName(), getHelp());
     }
 
     String CommandClassName();

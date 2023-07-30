@@ -1,7 +1,6 @@
 package fr.skitou.botcore.slashcommand;
 
-import fr.skitou.botcore.commands.ICommand;
-import fr.skitou.botcore.utils.Children;
+import fr.skitou.botcore.commands.AbstractCommand;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
@@ -9,9 +8,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
-@Children(targetPackages = {
-        "fr.skitou.botcore.slashcommand",
-})
+/**
+ * Define common methods for Slash Commands that are called from Discord.
+ * <br/>
+ * For most purposes, {@link AbstractCommand} should be used instead.
+ *
+ * @author Skitou
+ * @see AbstractSlashCommand
+ */
 public interface ISlashCommand {
 
     /**
@@ -22,10 +26,12 @@ public interface ISlashCommand {
 
     /**
      * @return The displayed help of the command. <br>
-     * By default returns {@link ICommand#prefix} + {@link ICommand#getCommand()}.
+     * By default returns "description".
      */
     @NotNull
-    String getHelp();
+    default String getHelp() {
+        return "No description";
+    }
 
     void onCommandReceived(SlashCommandInteractionEvent event);
 

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import io.sentry.Sentry;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,12 +17,15 @@ import java.nio.file.Files;
 import java.util.Objects;
 import java.util.Optional;
 
+@Getter
 public enum Config {
     CONFIG;
 
-    @Getter
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    private final String configFileName = "config.json";
+    private final File configFile = new File("data", configFileName);
 
     @Getter
     private JsonObject rootJson, defaultJson;
@@ -30,33 +34,28 @@ public enum Config {
      * Initiate configuration (parse JSON, copy from source if needed, etc...)
      */
     Config() {
-        String configFileName = "config.json";
-        File configFile = new File("data", configFileName);
+
         URL urlSourceJson = ClassLoader.getSystemResource(configFileName);
 
         try {
-            if (!configFile.exists()) { // If root file not found, copy from source
+            if(!configFile.exists()) { // If root file not found, copy from source
                 logger.warn("Config file not found, copying from sources...");
                 Files.copy(urlSourceJson.openStream(), configFile.toPath());
             }
 
-
-            defaultJson = gson.fromJson(new String(urlSourceJson.openStream().readAllBytes()), JsonObject.class);
+            InputStream stream = urlSourceJson.openStream();
+            defaultJson = gson.fromJson(new String(stream.readAllBytes()), JsonObject.class);
 
             BufferedReader reader = new BufferedReader(new FileReader(configFile.toString()));
             rootJson = gson.fromJson(reader, JsonObject.class);
             reader.close();
-        } catch (IOException e) {
+            stream.close();
+        } catch(IOException e) {
+            logger.error("Config threw while loading a {}: {}",
+                    e.getClass().getSimpleName(), e.getMessage());
+            Sentry.captureException(e);
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Provide shortcuts for frequently-used properties.
-     */
-    static String getGuildIdOrDefault(String guildConfigName, String defaultValue) {
-        final Optional<String> guildIdOptional = Optional.of(CONFIG.getPropertyElement("guild").orElseThrow().getAsJsonObject().get(guildConfigName).getAsString());
-        return guildIdOptional.orElse(defaultValue);
     }
 
     /**
@@ -86,6 +85,12 @@ public enum Config {
         return Optional.ofNullable(element == null ? null : element.getAsString());
     }
 
+    /**
+     * Get property from config.js file or source file if not possible
+     *
+     * @param key Property key to get
+     * @return The JsonElement if found or the default one
+     */
     public String getPropertyOrDefault(@NotNull String key) {
         Optional<String> optional = getProperty(key);
         return optional.orElseGet(() -> Objects.requireNonNull(getRawDefaultProperty(key)).getAsString());
@@ -103,9 +108,17 @@ public enum Config {
      * Save the rootJson to the root config.json
      */
     public void saveModifications() throws IOException {
-        FileWriter writer = new FileWriter("config.json");
+        FileWriter writer = new FileWriter(configFile);
         writer.write(gson.toJson(rootJson));
         writer.flush();
         writer.close();
+    }
+
+    /**
+     * Provide shortcuts for frequently-used properties.
+     */
+    static String getGuildIdOrDefault(String guildConfigName, String defaultValue) {
+        final Optional<String> guildIdOptional = Optional.of(CONFIG.getPropertyElement("guild").orElseThrow().getAsJsonObject().get(guildConfigName).getAsString());
+        return guildIdOptional.orElse(defaultValue);
     }
 }

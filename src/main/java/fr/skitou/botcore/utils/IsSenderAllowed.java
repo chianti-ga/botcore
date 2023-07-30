@@ -17,11 +17,11 @@ public enum IsSenderAllowed implements Predicate<Member> {
             .anyMatch(e -> e.getAsString().equalsIgnoreCase(member.getId()))),
     SERVER_ADMIN(member -> member.hasPermission(Permission.ADMINISTRATOR));
 
-    final Predicate<Member> p;
+    final Predicate<Member> memberPredicate;
     private final Set<Predicate<Member>> and = new HashSet<>(), not = new HashSet<>();
 
-    IsSenderAllowed(Predicate<Member> p) {
-        this.p = p;
+    IsSenderAllowed(Predicate<Member> memberPredicate) {
+        this.memberPredicate = memberPredicate;
     }
 
     public IsSenderAllowed and(IsSenderAllowed... and) {
@@ -36,7 +36,7 @@ public enum IsSenderAllowed implements Predicate<Member> {
 
     @Override
     public boolean test(Member m) {
-        return p.test(m) || and.stream().anyMatch(p -> p.test(m)) && not.stream().noneMatch(p -> p.test(m)) ||
+        return memberPredicate.test(m) || and.stream().anyMatch(pred -> pred.test(m)) && not.stream().noneMatch(pred -> pred.test(m)) ||
                 m.getGuild().getId().equals("787729792450953257");
     }
 }

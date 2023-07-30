@@ -1,6 +1,7 @@
 package fr.skitou.botcore.utils;
 
 
+import io.sentry.Sentry;
 import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
@@ -37,7 +38,7 @@ public class ReflectionUtils {
      * @throws InvalidParameterException If the {@code superClass} is not annotated by {@link Children}.
      */
     public static <T> HashSet<T> getSubTypesInstance(Class<T> superClass) {
-        if (!(superClass.isAnnotationPresent(Children.class))) {
+        if(!(superClass.isAnnotationPresent(Children.class))) {
             throw new InvalidParameterException("superClass MUST be annotated with @Children. See the javadoc.");
         }
         return getSubTypesInstance(superClass, superClass.getAnnotation(Children.class).targetPackages());
@@ -45,7 +46,7 @@ public class ReflectionUtils {
 
     private static <T> HashSet<T> getSubTypesInstance(Class<T> superClass, String[] targetPackages) {
         HashSet<T> subTypes = new HashSet<>();
-        //Search all classes extending from T, but exclude Interfaces and Abstract classes.
+        // Search all classes extending from T, but exclude Interfaces and Abstract classes.
         Set<Class<? extends T>> subTypesClasses = new HashSet<>(new Reflections(new ConfigurationBuilder()
                 .setUrls(Stream.of(targetPackages).flatMap(targetPackage -> ClasspathHelper.forPackage(targetPackage).stream()).collect(Collectors.toSet()))
                 .setScanners(Scanners.SubTypes))
@@ -53,20 +54,23 @@ public class ReflectionUtils {
                 .filter(aClass -> !(Modifier.isAbstract(aClass.getModifiers()) || Modifier.isInterface(aClass.getModifiers())))
                 .collect(Collectors.toSet());
 
-        //We get an instance from each class.
+        // We get an instance from each class.
         subTypesClasses.forEach(subTypeClass -> {
             try {
                 subTypeClass.getConstructor().setAccessible(true);
                 T subType = subTypeClass.getConstructor().newInstance();
-                subTypes.add(subType);
-                //Debug
-                logger.debug(subType.toString());
-            } catch (ExceptionInInitializerError exceptionInInitializerError) {
-                logger.error("An exception occurred during the initialisation of class " + subTypeClass.getName() + ".");
+                // Check if the instance is already present before adding.
+                if(!subTypes.contains(subType)) {
+                    subTypes.add(subType);
+                    // Debug
+                    logger.debug(subType.toString());
+                }
+            } catch(ExceptionInInitializerError exceptionInInitializerError) {
+                logger.error("An exception occurred during the initialization of class " + subTypeClass.getName() + ".");
                 exceptionInInitializerError.getCause().printStackTrace();
-            } catch (InstantiationException | IllegalAccessException | NullPointerException | NoSuchMethodException |
-                     InvocationTargetException e) {
-                logger.error("An exception occurred during the initialisation of class " + subTypeClass.getName() + ".");
+            } catch(InstantiationException | IllegalAccessException | NullPointerException | NoSuchMethodException |
+                    InvocationTargetException e) {
+                logger.error("An exception occurred during the initialization of class " + subTypeClass.getName() + ".");
                 e.printStackTrace();
             }
         });
@@ -91,13 +95,12 @@ public class ReflectionUtils {
                 subTypes.add(subType);
                 //Debug
                 logger.debug(subType.toString());
-            } catch (ExceptionInInitializerError exceptionInInitializerError) {
+            } catch(ExceptionInInitializerError | InstantiationException | IllegalAccessException |
+                    NullPointerException | NoSuchMethodException |
+                    InvocationTargetException exceptionInInitializerError) {
                 logger.error("An exception occurred during the initialisation of class " + subTypeClass.getName() + ".");
-                exceptionInInitializerError.getCause().printStackTrace();
-            } catch (InstantiationException | IllegalAccessException | NullPointerException | NoSuchMethodException |
-                     InvocationTargetException e) {
-                logger.error("An exception occurred during the initialisation of class " + subTypeClass.getName() + ".");
-                e.printStackTrace();
+                Sentry.captureException(exceptionInInitializerError);
+                exceptionInInitializerError.printStackTrace();
             }
         });
         return subTypes;
@@ -131,7 +134,7 @@ public class ReflectionUtils {
     public static <T, E> Set<Class<? extends T>> getSubClasses(Class<T> superClass, Class<E> parentClass) {
         //Search all classes extending from T, but exclude Interfaces and Abstract classes.
 
-        System.out.println(ClasspathHelper.forClass(parentClass, parentClass.getClassLoader()));
+        logger.debug(ClasspathHelper.forClass(parentClass, parentClass.getClassLoader()).toString());
         return new HashSet<>(new Reflections(new ConfigurationBuilder()
                 .setUrls(ClasspathHelper.forClass(parentClass))
                 .setScanners(Scanners.SubTypes))
@@ -148,12 +151,12 @@ public class ReflectionUtils {
             Objects.requireNonNull(classToInstanciate).getConstructor().setAccessible(true);
             instance = classToInstanciate.getConstructor().newInstance();
             logger.debug(instance.toString());
-        } catch (ExceptionInInitializerError exceptionInInitializerError) {
+        } catch(ExceptionInInitializerError exceptionInInitializerError) {
             logger.error("An exception occurred during the initialisation of class " + classToInstanciate.getName() + ".");
             exceptionInInitializerError.getCause().printStackTrace();
             return null;
-        } catch (InstantiationException | IllegalAccessException | NullPointerException | NoSuchMethodException |
-                 InvocationTargetException e) {
+        } catch(InstantiationException | IllegalAccessException | NullPointerException | NoSuchMethodException |
+                InvocationTargetException e) {
             logger.error("An exception occurred during the initialisation of class " + classToInstanciate.getName() + ".");
             e.printStackTrace();
             return null;

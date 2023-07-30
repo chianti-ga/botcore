@@ -5,12 +5,14 @@ import fr.skitou.botcore.slashcommand.ISlashCommand;
 import fr.skitou.botcore.subsystems.SubsystemAdapter;
 import fr.skitou.botcore.utils.FilesCache;
 import fr.skitou.botcore.utils.reporter.SentryManager;
+import io.sentry.Sentry;
 import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.slf4j.Logger;
@@ -18,7 +20,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 
@@ -42,7 +43,7 @@ public class BotInstance {
     private static String coreVersion;
 
 
-    public BotInstance(BotInstanceBuilder builder) {
+    private BotInstance(BotInstanceBuilder builder) {
         classicCommandPackage = builder.classicCommandPackage;
         slashCommandPackage = builder.slashCommandPackage;
         subsystemPackage = builder.subsystemPackage;
@@ -57,7 +58,7 @@ public class BotInstance {
             HashSet<ISlashCommand> slashCommands = CommandAdapter.getInstance().getSlashcommands();
 
             jda.getGuilds().forEach(guild -> {
-                var a = slashCommands.stream()
+                Set<SlashCommandData> a = slashCommands.stream()
                         .map(iSlashCommand ->
                                 Commands.slash(iSlashCommand.getName().toLowerCase(), iSlashCommand.getHelp())
                                         .addOptions(iSlashCommand.getOptionData())
@@ -77,30 +78,31 @@ public class BotInstance {
                     .enableIntents(builder.enabledintents)
                     .disableIntents(builder.disabledintents)
                     .build();
-        } catch (NullPointerException e) {
+        } catch(NullPointerException e) {
             e.printStackTrace();
             e.getCause();
             logger.error("ERROR: Login failed: " + e.getMessage() + ":" + Arrays.toString(e.getStackTrace()) + "\n Check the token or retry later.");
             Runtime.getRuntime().exit(2);
         }
+        SentryManager.getInstance();
 
         //Run once injection point
         //Only used for test purposes.
         try {
             jda.awaitReady();
             runWhenReady();
-        } catch (InterruptedException ignored) {
+        } catch(InterruptedException e) {
+            logger.error("Runnable threw a {}: {}",
+                    e.getClass().getSimpleName(), e.getMessage());
+            Sentry.captureException(e);
+            Thread.currentThread().interrupt();
         }
 
-        SentryManager.getInstance();
-
-
-        Manifest manifest = null;
         try {
-            manifest = new Manifest(ClassLoader.getSystemResourceAsStream("META-INF/MANIFEST.MF"));
+            Manifest manifest = new Manifest(ClassLoader.getSystemResourceAsStream("META-INF/MANIFEST.MF"));
             coreVersion = manifest.getMainAttributes().getValue("BotCore-Version");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch(IOException e) {
+            logger.error("Can't get BotCore-Version from jar manifest (normal on dev env).");
         }
 
     }
@@ -125,10 +127,10 @@ public class BotInstance {
 
     private static String getToken() {
         String token = "";
-        if (token.isEmpty()) {
+        if(token.isEmpty()) {
             //Config
             Optional<String> opToken = Config.CONFIG.getProperty("bot.token");
-            if (opToken.isPresent() && !opToken.get().isEmpty()) {
+            if(opToken.isPresent() && !opToken.get().isEmpty()) {
                 logger.info("Using config as the token provider.");
                 return opToken.get();
             } else {
@@ -138,6 +140,12 @@ public class BotInstance {
         return token;
     }
 
+    /**
+     * Checks whether the application is running in test mode.
+     * Test mode is enabled with the command line argument "-Dtest".
+     *
+     * @return {@code true} if the application is running in test mode, {@code false} otherwise.
+     */
     public static boolean isTestMode() {
         List<String> args = Arrays.asList(botArgs);
         Optional<String> optional = args.stream().filter(arg -> arg.replaceFirst("-", "").equalsIgnoreCase("Dtest")).findFirst();
