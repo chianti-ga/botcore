@@ -140,6 +140,12 @@ public class BotInstance {
         return token;
     }
 
+    /**
+     * Checks whether the application is running in test mode.
+     * Test mode is enabled with the command line argument "-Dtest".
+     *
+     * @return {@code true} if the application is running in test mode, {@code false} otherwise.
+     */
     public static boolean isTestMode() {
         List<String> args = Arrays.asList(botArgs);
         Optional<String> optional = args.stream().filter(arg -> arg.replaceFirst("-", "").equalsIgnoreCase("Dtest")).findFirst();

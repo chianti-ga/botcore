@@ -85,6 +85,12 @@ public enum Config {
         return Optional.ofNullable(element == null ? null : element.getAsString());
     }
 
+    /**
+     * Get property from config.js file or source file if not possible
+     *
+     * @param key Property key to get
+     * @return The JsonElement if found or the default one
+     */
     public String getPropertyOrDefault(@NotNull String key) {
         Optional<String> optional = getProperty(key);
         return optional.orElseGet(() -> Objects.requireNonNull(getRawDefaultProperty(key)).getAsString());

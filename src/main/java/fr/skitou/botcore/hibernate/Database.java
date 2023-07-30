@@ -22,6 +22,12 @@ import java.util.*;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
+/**
+ * Hibernate helper
+ * <br/>
+ *
+ * @author uku3lig
+ */
 public class Database {
 
     protected static final Logger logger = LoggerFactory.getLogger(Database.class);
