@@ -25,10 +25,10 @@ public class SubsystemAdapter implements EventListener {
 
         StringJoiner subsystemStringJoiner = new StringJoiner("\n");
         subsystems.forEach(subsystem -> subsystemStringJoiner.add(subsystem.getName()));
-        logger.info("Detected subsystems: \n" + subsystemStringJoiner);
+        logger.info("Detected subsystems: \n {}", subsystemStringJoiner);
         StringJoiner enabledSubsystemStringJoiner = new StringJoiner("\n");
         subsystems.stream().filter(ISubsystem::isEnabled).forEach(subsystem -> enabledSubsystemStringJoiner.add(subsystem.getName()));
-        logger.info("Enabled subsystems: \n" + enabledSubsystemStringJoiner);
+        logger.info("Enabled subsystems: \n, {}", enabledSubsystemStringJoiner);
     }
 
     /**

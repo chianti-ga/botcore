@@ -20,7 +20,7 @@ public class HelpCommand extends AbstractCommand {
     @Override
     public void onCommandReceived(CommandReceivedEvent event) {
         if(event.getArgs().size() == 1) {
-            BotInstance.getEventListeners().stream().filter(eventListener -> eventListener instanceof CommandAdapter)
+            BotInstance.getEventListeners().stream().filter(CommandAdapter.class::isInstance)
                     .forEach(eventListener -> ((CommandAdapter) eventListener).getCommands()
                             .stream().filter(iCommand -> iCommand.getClass().getSimpleName().equalsIgnoreCase(event.getArgs().get(0)) || iCommand.getCommand().equalsIgnoreCase(event.getArgs().get(0)))
                             .findFirst().ifPresentOrElse(
@@ -31,7 +31,7 @@ public class HelpCommand extends AbstractCommand {
         EmbedBuilder builder = new EmbedBuilder()
                 .setTitle("Commands");
         Map<String, List<String>> fields = new HashMap<>();
-        BotInstance.getEventListeners().stream().filter(eventListener -> eventListener instanceof CommandAdapter)
+        BotInstance.getEventListeners().stream().filter(CommandAdapter.class::isInstance)
                 .forEach(eventListener -> ((CommandAdapter) eventListener).getCommands()
                         .forEach(command -> {
                             if(command.isSenderAllowed().test(event.getMember())) {

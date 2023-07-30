@@ -15,7 +15,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FilesCache {
@@ -42,7 +41,7 @@ public class FilesCache {
 
     private void scan() {
         try(Stream<Path> walk = Files.walk(cacheFolder.toPath())) {
-            cachedFiles = walk.filter(Files::isRegularFile).map(Path::toFile).collect(Collectors.toList());
+            cachedFiles = walk.filter(Files::isRegularFile).map(Path::toFile).toList();
             cachedFiles.forEach(File::deleteOnExit); // Delete them even if the bot crash or suddenly stop
             //noinspection ResultOfMethodCallIgnored
             ignoreList.forEach(String::toLowerCase);
@@ -65,7 +64,7 @@ public class FilesCache {
             }
         });
 
-        logger.info(fileCount + " cached files deleted.");
+        logger.info("{} cached files deleted.", fileCount);
         fileCount.set(0);
     }
 }

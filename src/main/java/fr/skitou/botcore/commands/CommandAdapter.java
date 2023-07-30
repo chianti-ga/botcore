@@ -76,8 +76,8 @@ public class CommandAdapter extends ListenerAdapter {
             return;
         }
 
-        // Only consider messages starting with the prefix.
-        if(!(event.getMessage().getContentDisplay().startsWith(ICommand.prefix))) return;
+        // Only consider messages starting with the PREFIX.
+        if(!(event.getMessage().getContentDisplay().startsWith(ICommand.PREFIX))) return;
 
         // Avoid self-loops
         if(event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) return;

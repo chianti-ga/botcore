@@ -34,7 +34,7 @@ public class CommandManager extends AbstractCommand {
 
     @Override
     public @NotNull String getHelp() {
-        return ICommand.prefix + "command (list|enable|disable) (command|all)";
+        return ICommand.PREFIX + "command (list|enable|disable) (command|all)";
     }
 
     @Override

@@ -25,7 +25,7 @@ import java.util.function.Predicate;
         "fr.skitou.botcore.subsystems"
 })
 public interface ICommand {
-    String prefix = BotInstance.isTestMode() ? "?" : Config.CONFIG.getPropertyOrDefault("bot.prefix");
+    String PREFIX = BotInstance.isTestMode() ? "?" : Config.CONFIG.getPropertyOrDefault("bot.PREFIX");
 
     /**
      * @return The command, without its prefix.
@@ -41,11 +41,11 @@ public interface ICommand {
 
     /**
      * @return The displayed help of the command. <br>
-     * By default returns {@link ICommand#prefix} + {@link ICommand#getCommand()}.
+     * By default returns {@link ICommand#PREFIX} + {@link ICommand#getCommand()}.
      */
     @NotNull
     default String getHelp() {
-        return prefix + getCommand();
+        return PREFIX + getCommand();
     }
 
     /**

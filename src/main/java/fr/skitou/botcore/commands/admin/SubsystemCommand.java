@@ -35,7 +35,7 @@ public class SubsystemCommand extends AbstractCommand {
 
     @Override
     public @NotNull String getHelp() {
-        return prefix + getCommand() + " (list|enable|disable) (subsystem)";
+        return PREFIX + getCommand() + " (list|enable|disable) (subsystem)";
     }
 
     @Override

@@ -48,9 +48,9 @@ public class DiscordLogger extends AppenderBase<ILoggingEvent> {
                 return 0xdb3f23;
             }
             default -> {
+                return 0xc0c0c0;
             }
         }
-        return 0xc0c0c0;
     }
 
     /**

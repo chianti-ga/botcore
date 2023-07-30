@@ -3,7 +3,6 @@ package fr.skitou.botcore.subsystems;
 import fr.skitou.botcore.commands.CommandAdapter;
 import fr.skitou.botcore.slashcommand.ISlashCommand;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
-import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import org.jetbrains.annotations.NotNull;
@@ -37,10 +36,5 @@ public class SlashCommandUpdater extends AbstractSubsystem {
                                 .addOptions(iSlashCommand.getOptionData())
                                 .addSubcommands(iSlashCommand.getSubcommandDatas())).collect(Collectors.toSet());
         event.getGuild().updateCommands().addCommands(a).queue();
-    }
-
-    @Override
-    public void onGuildLeave(@NotNull GuildLeaveEvent event) {
-        super.onGuildLeave(event);
     }
 }

@@ -1,6 +1,7 @@
 package fr.skitou.botcore.utils;
 
 
+import io.sentry.Sentry;
 import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
@@ -94,13 +95,12 @@ public class ReflectionUtils {
                 subTypes.add(subType);
                 //Debug
                 logger.debug(subType.toString());
-            } catch(ExceptionInInitializerError exceptionInInitializerError) {
+            } catch(ExceptionInInitializerError | InstantiationException | IllegalAccessException |
+                    NullPointerException | NoSuchMethodException |
+                    InvocationTargetException exceptionInInitializerError) {
                 logger.error("An exception occurred during the initialisation of class " + subTypeClass.getName() + ".");
-                exceptionInInitializerError.getCause().printStackTrace();
-            } catch(InstantiationException | IllegalAccessException | NullPointerException | NoSuchMethodException |
-                    InvocationTargetException e) {
-                logger.error("An exception occurred during the initialisation of class " + subTypeClass.getName() + ".");
-                e.printStackTrace();
+                Sentry.captureException(exceptionInInitializerError);
+                exceptionInInitializerError.printStackTrace();
             }
         });
         return subTypes;
@@ -134,7 +134,7 @@ public class ReflectionUtils {
     public static <T, E> Set<Class<? extends T>> getSubClasses(Class<T> superClass, Class<E> parentClass) {
         //Search all classes extending from T, but exclude Interfaces and Abstract classes.
 
-        System.out.println(ClasspathHelper.forClass(parentClass, parentClass.getClassLoader()));
+        logger.debug(ClasspathHelper.forClass(parentClass, parentClass.getClassLoader()).toString());
         return new HashSet<>(new Reflections(new ConfigurationBuilder()
                 .setUrls(ClasspathHelper.forClass(parentClass))
                 .setScanners(Scanners.SubTypes))

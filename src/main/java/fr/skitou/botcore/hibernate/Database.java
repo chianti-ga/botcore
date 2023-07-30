@@ -25,6 +25,7 @@ import java.util.stream.Stream;
 public class Database {
 
     protected static final Logger logger = LoggerFactory.getLogger(Database.class);
+    private static final Random random = new Random();
     private static SessionFactory factory;
 
     private Database() {
@@ -170,7 +171,7 @@ public class Database {
 
     public static <T> Optional<T> getRand(Class<T> klass) {
         if(!isEntity(klass) || isEmpty(klass)) return Optional.empty();
-        int index = new Random().nextInt((int) Database.count(klass));
+        int index = random.nextInt((int) Database.count(klass));
         return getAll(klass).stream().skip(index).findFirst();
     }
 }

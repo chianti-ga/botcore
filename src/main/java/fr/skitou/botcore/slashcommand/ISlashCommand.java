@@ -22,7 +22,7 @@ public interface ISlashCommand {
 
     /**
      * @return The displayed help of the command. <br>
-     * By default returns {@link ICommand#prefix} + {@link ICommand#getCommand()}.
+     * By default returns {@link ICommand#PREFIX} + {@link ICommand#getCommand()}.
      */
     @NotNull
     String getHelp();

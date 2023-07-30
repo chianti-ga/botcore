@@ -28,8 +28,8 @@ import java.util.StringJoiner;
  */
 public class ConfigCommand extends AbstractCommand {
 
+    private static final Config conf = Config.CONFIG;
     private final Logger logger = LoggerFactory.getLogger(ConfigCommand.class);
-    private final Config conf = Config.CONFIG;
 
     @Override
     public void onCommandReceived(CommandReceivedEvent event) {
@@ -42,15 +42,15 @@ public class ConfigCommand extends AbstractCommand {
             case "list" -> listConfig(event);
             case "edit" -> {
                 if(event.getArgs().size() >= 3) editConfig(event);
-                else event.getChannel().sendMessage(prefix + "config edit [key] [value]").queue();
+                else event.getChannel().sendMessage(PREFIX + "config edit [key] [value]").queue();
             }
             case "add" -> {
                 if(event.getArgs().size() >= 3) addConfig(event);
-                else event.getChannel().sendMessage(prefix + "config add [key] [value]").queue();
+                else event.getChannel().sendMessage(PREFIX + "config add [key] [value]").queue();
             }
             case "remove" -> {
                 if(event.getArgs().size() >= 3) removeConfig(event);
-                else event.getChannel().sendMessage(prefix + "config remove [key] [value]").queue();
+                else event.getChannel().sendMessage(PREFIX + "config remove [key] [value]").queue();
             }
             default -> event.getChannel().sendMessage(getHelp()).queue();
         }
@@ -73,7 +73,7 @@ public class ConfigCommand extends AbstractCommand {
 
     @Override
     public @NotNull String getHelp() {
-        return prefix + "config (list|edit|add|remove) [*key*] [*value*]";
+        return PREFIX + "config (list|edit|add|remove) [*key*] [*value*]";
     }
 
     @Override
@@ -93,7 +93,7 @@ public class ConfigCommand extends AbstractCommand {
             event.getChannel().sendMessage("Key not existing").queue();
             return;
         } else if(!property.get().isJsonArray()) {
-            event.getChannel().sendMessage("To edit a single parameter please use " + prefix + "config edit [key] [value]").queue();
+            event.getChannel().sendMessage("To edit a single parameter please use " + PREFIX + "config edit [key] [value]").queue();
             return;
         }
 
@@ -143,7 +143,7 @@ public class ConfigCommand extends AbstractCommand {
             event.getChannel().sendMessage("Key not existing").queue();
             return;
         } else if(!property.get().isJsonArray()) {
-            event.getChannel().sendMessage("To edit a single parameter please use " + prefix + "config edit [key] [value]").queue();
+            event.getChannel().sendMessage("To edit a single parameter please use " + PREFIX + "config edit [key] [value]").queue();
             return;
         }
 
@@ -173,7 +173,7 @@ public class ConfigCommand extends AbstractCommand {
             event.getChannel().sendMessage("Key not existing").queue();
             return;
         } else if(property.get().isJsonArray()) {
-            event.getChannel().sendMessage("To edit a list please use " + prefix + "config add/remove [key] [value]").queue();
+            event.getChannel().sendMessage("To edit a list please use " + PREFIX + "config add/remove [key] [value]").queue();
             return;
         }
 

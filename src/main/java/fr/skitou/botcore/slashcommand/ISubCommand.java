@@ -17,7 +17,7 @@ public interface ISubCommand {
 
     /**
      * @return The displayed help of the subcommand. <br>
-     * By default returns {@link ICommand#prefix} + {@link ICommand#getCommand()}.
+     * By default returns {@link ICommand#PREFIX} + {@link ICommand#getCommand()}.
      */
     @NotNull
     String getHelpDescription();
