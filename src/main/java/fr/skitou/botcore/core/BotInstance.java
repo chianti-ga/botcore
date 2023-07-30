@@ -1,7 +1,7 @@
 package fr.skitou.botcore.core;
 
-import fr.skitou.botcore.commands.CommandAdapter;
-import fr.skitou.botcore.slashcommand.ISlashCommand;
+import fr.skitou.botcore.commands.classic.CommandAdapter;
+import fr.skitou.botcore.commands.slash.ISlashCommand;
 import fr.skitou.botcore.subsystems.SubsystemAdapter;
 import fr.skitou.botcore.utils.FilesCache;
 import fr.skitou.botcore.utils.reporter.SentryManager;

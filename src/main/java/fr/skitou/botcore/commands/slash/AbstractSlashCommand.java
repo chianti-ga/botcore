@@ -1,4 +1,4 @@
-package fr.skitou.botcore.slashcommand;
+package fr.skitou.botcore.commands.slash;
 
 import fr.skitou.botcore.utils.ReflectionUtils;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

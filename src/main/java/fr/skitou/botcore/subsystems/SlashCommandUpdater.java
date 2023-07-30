@@ -1,7 +1,7 @@
 package fr.skitou.botcore.subsystems;
 
-import fr.skitou.botcore.commands.CommandAdapter;
-import fr.skitou.botcore.slashcommand.ISlashCommand;
+import fr.skitou.botcore.commands.classic.CommandAdapter;
+import fr.skitou.botcore.commands.slash.ISlashCommand;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;

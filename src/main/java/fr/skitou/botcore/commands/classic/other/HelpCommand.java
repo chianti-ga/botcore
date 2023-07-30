@@ -1,8 +1,8 @@
-package fr.skitou.botcore.commands.other;
+package fr.skitou.botcore.commands.classic.other;
 
-import fr.skitou.botcore.commands.AbstractCommand;
-import fr.skitou.botcore.commands.CommandAdapter;
-import fr.skitou.botcore.commands.CommandReceivedEvent;
+import fr.skitou.botcore.commands.classic.AbstractCommand;
+import fr.skitou.botcore.commands.classic.CommandAdapter;
+import fr.skitou.botcore.commands.classic.CommandReceivedEvent;
 import fr.skitou.botcore.core.BotInstance;
 import fr.skitou.botcore.utils.IsSenderAllowed;
 import fr.skitou.botcore.utils.NotWorking;

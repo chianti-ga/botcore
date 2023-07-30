@@ -1,8 +1,8 @@
-package fr.skitou.botcore.commands;
+package fr.skitou.botcore.commands.classic;
 
 import fr.skitou.botcore.core.BotInstance;
 import fr.skitou.botcore.core.Config;
-import fr.skitou.botcore.slashcommand.ISlashCommand;
+import fr.skitou.botcore.commands.slash.ISlashCommand;
 import fr.skitou.botcore.utils.IsSenderAllowed;
 import fr.skitou.botcore.utils.ReflectionUtils;
 import io.sentry.Sentry;

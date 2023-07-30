@@ -1,9 +1,9 @@
-package fr.skitou.botcore.commands.admin;
+package fr.skitou.botcore.commands.classic.admin;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import fr.skitou.botcore.commands.AbstractCommand;
-import fr.skitou.botcore.commands.CommandReceivedEvent;
+import fr.skitou.botcore.commands.classic.AbstractCommand;
+import fr.skitou.botcore.commands.classic.CommandReceivedEvent;
 import fr.skitou.botcore.core.BotInstance;
 import fr.skitou.botcore.core.Config;
 import fr.skitou.botcore.utils.IsSenderAllowed;

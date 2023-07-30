@@ -1,6 +1,6 @@
-package fr.skitou.botcore.slashcommand;
+package fr.skitou.botcore.commands.slash;
 
-import fr.skitou.botcore.commands.AbstractCommand;
+import fr.skitou.botcore.commands.classic.AbstractCommand;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
