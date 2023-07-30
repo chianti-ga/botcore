@@ -5,10 +5,10 @@
 # This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
 
-name: Publish to Maven
+name: Build check
 
 on:
-  push:
+  pull_request:
     branches: [ "master" ]
 
 permissions:
@@ -41,8 +41,8 @@ jobs:
           gradle-version: wrapper
           arguments: build
 
-      - name: Publish to repo
-        uses: gradle/gradle-build-action@v2
+      - name: Publish Packages
+        uses: actions/upload-artifact@v3
         with:
-          gradle-version: wrapper
-          arguments: publish -PreposiliteRepositoryReleasesUsername=${{ secrets.REP_TOKEN }} -PreposiliteRepositoryReleasesPassword=${{ secrets.REP_PASS }}
+          name: Package
+          path: build/libs
