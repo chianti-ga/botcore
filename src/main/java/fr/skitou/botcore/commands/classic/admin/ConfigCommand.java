@@ -235,7 +235,9 @@ public class ConfigCommand extends AbstractCommand {
                 BotInstance.getJda().getToken(),
                 config.getPropertyOrDefault("bot.token"),
                 config.getPropertyOrDefault("loggerUrl"),
-                config.getPropertyOrDefault("sentryDns")
+                config.getPropertyOrDefault("sentryDns"),
+                config.getPropertyOrDefault("spotify.id"),
+                config.getPropertyOrDefault("spotify.pass")
         );
 
         for(String secret : secrets) source = source.replaceAll(secret, "[SECRET]");
