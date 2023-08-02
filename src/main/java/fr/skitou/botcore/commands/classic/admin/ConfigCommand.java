@@ -237,7 +237,7 @@ public class ConfigCommand extends AbstractCommand {
                 config.getPropertyOrDefault("loggerUrl"),
                 config.getPropertyOrDefault("sentryDns"),
                 config.getPropertyOrDefault("spotify.id"),
-                config.getPropertyOrDefault("spotify.pass")
+                config.getPropertyOrDefault("spotify.secret")
         );
 
         for(String secret : secrets) source = source.replaceAll(secret, "[SECRET]");
