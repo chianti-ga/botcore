@@ -25,7 +25,7 @@ import java.util.function.Predicate;
         "fr.skitou.botcore.subsystems"
 })
 public interface ICommand {
-    String PREFIX = BotInstance.isTestMode() ? "?" : Config.CONFIG.getPropertyOrDefault("bot.PREFIX");
+    String PREFIX = BotInstance.isTestMode() ? "?" : Config.CONFIG.getPropertyOrDefault("bot.prefix");
 
     /**
      * @return The command, without its prefix.
