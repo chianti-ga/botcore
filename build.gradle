@@ -4,7 +4,7 @@ plugins {
     //Update deps
     id "com.github.ben-manes.versions" version "0.46.0"
 
-    id "io.freefair.lombok" version "8.1.0"
+    id "io.freefair.lombok" version "8.2.1"
 
     id 'java-library'
     id 'maven-publish'
@@ -37,14 +37,14 @@ allprojects {
 
         // === APIs ===
         // JDA
-        implementation("net.dv8tion:JDA:5.0.0-beta.12")
+        implementation("net.dv8tion:JDA:5.0.0-beta.13")
 
         // === Logging ==
 
         // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
         implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.5'
         // https://mvnrepository.com/artifact/ch.qos.logback/logback
-        implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.4.8'
+        implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.4.11'
 
         // Utils
         implementation group: 'org.reflections', name: 'reflections', version: '0.10.2'
@@ -67,7 +67,7 @@ allprojects {
 
         implementation 'com.vdurmont:emoji-java:5.1.1'
 
-        implementation 'io.sentry:sentry:6.27.0'
+        implementation 'io.sentry:sentry:6.28.0'
 
         implementation group: 'club.minnced', name: 'discord-webhooks', version: '0.8.4'
     }
