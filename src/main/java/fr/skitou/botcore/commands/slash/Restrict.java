@@ -104,6 +104,6 @@ class List implements ISubCommand {
 
     @Override
     public String CommandClassName() {
-        return null;
+        return "restric";
     }
 }
