@@ -78,7 +78,7 @@ public class BotInstance {
                     .enableIntents(builder.enabledintents)
                     .disableIntents(builder.disabledintents)
                     .build();
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             e.printStackTrace();
             e.getCause();
             logger.error("ERROR: Login failed: " + e.getMessage() + ":" + Arrays.toString(e.getStackTrace()) + "\n Check the token or retry later.");
@@ -91,7 +91,7 @@ public class BotInstance {
         try {
             jda.awaitReady();
             runWhenReady();
-        } catch(InterruptedException e) {
+        } catch (InterruptedException e) {
             logger.error("Runnable threw a {}: {}",
                     e.getClass().getSimpleName(), e.getMessage());
             Sentry.captureException(e);
@@ -101,7 +101,7 @@ public class BotInstance {
         try {
             Manifest manifest = new Manifest(ClassLoader.getSystemResourceAsStream("META-INF/MANIFEST.MF"));
             coreVersion = manifest.getMainAttributes().getValue("BotCore-Version");
-        } catch(IOException e) {
+        } catch (IOException e) {
             logger.error("Can't get BotCore-Version from jar manifest (normal on dev env).");
         }
 
@@ -127,10 +127,10 @@ public class BotInstance {
 
     private static String getToken() {
         String token = "";
-        if(token.isEmpty()) {
+        if (token.isEmpty()) {
             //Config
             Optional<String> opToken = Config.CONFIG.getProperty("bot.token");
-            if(opToken.isPresent() && !opToken.get().isEmpty()) {
+            if (opToken.isPresent() && !opToken.get().isEmpty()) {
                 logger.info("Using config as the token provider.");
                 return opToken.get();
             } else {

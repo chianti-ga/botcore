@@ -1,7 +1,5 @@
 package fr.skitou.botcore.commands.slash;
 
-import fr.skitou.botcore.commands.slash.ISlashCommand;
-import fr.skitou.botcore.commands.slash.ISubCommand;
 import fr.skitou.botcore.hibernate.Database;
 import fr.skitou.botcore.hibernate.entities.MembersBlacklist;
 import fr.skitou.botcore.utils.IsSenderAllowed;
@@ -42,19 +40,19 @@ public class Restrict implements ISlashCommand {
 
     @Override
     public void onCommandReceived(SlashCommandInteractionEvent event) {
-        if (!IsSenderAllowed.SERVER_ADMIN.test(event.getMember()) || !IsSenderAllowed.BotAdmin.test(event.getMember())){
+        if (!IsSenderAllowed.SERVER_ADMIN.test(event.getMember()) || !IsSenderAllowed.BotAdmin.test(event.getMember())) {
             event.reply("You don't have the permission to execute this command.").queue();
             return;
         }
         int duration = event.getOption("duration").getAsInt();
 
-        if (duration<=0){
+        if (duration <= 0) {
             event.reply("Invalid duration").queue();
             return;
         }
 
-        if (IsSenderAllowed.BotAdmin.test(event.getMember())){
-            event.reply("Restricted for " + duration+"s").queue();
+        if (IsSenderAllowed.BotAdmin.test(event.getMember())) {
+            event.reply("Restricted for " + duration + "s").queue();
         }
 
         Set<MembersBlacklist> membersBlacklists = Database.getAll(MembersBlacklist.class).stream()
@@ -70,6 +68,7 @@ public class Restrict implements ISlashCommand {
         }
     }
 }
+
 class List implements ISubCommand {
     @Override
     public @NotNull String getName() {
@@ -96,7 +95,7 @@ class List implements ISubCommand {
         });
         stringBuilder.append("```\n");
         EmbedBuilder builder = new EmbedBuilder();
-        builder.setTitle("Restricted member on: "+event.getGuild().getName())
+        builder.setTitle("Restricted member on: " + event.getGuild().getName())
                 .setColor(QuickColors.LIGHT_BLUE)
                 .setDescription(stringBuilder.toString());
         event.replyEmbeds(builder.build()).queue();

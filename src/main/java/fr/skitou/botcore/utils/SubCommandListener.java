@@ -31,8 +31,8 @@ public class SubCommandListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-        if(!event.getChannel().getId().equals(channel.getId())) return;
-        if(!event.getAuthor().getId().equals(user.getId())) return;
+        if (!event.getChannel().getId().equals(channel.getId())) return;
+        if (!event.getAuthor().getId().equals(user.getId())) return;
         action.accept(event.getMessage());
         BotInstance.getJda().removeEventListener(this);
 
