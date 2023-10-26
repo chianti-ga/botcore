@@ -1,8 +1,8 @@
 package fr.skitou.botcore.commands.classic;
 
+import fr.skitou.botcore.commands.slash.ISlashCommand;
 import fr.skitou.botcore.core.BotInstance;
 import fr.skitou.botcore.core.Config;
-import fr.skitou.botcore.commands.slash.ISlashCommand;
 import fr.skitou.botcore.hibernate.Database;
 import fr.skitou.botcore.hibernate.entities.MembersBlacklist;
 import fr.skitou.botcore.utils.IsSenderAllowed;
@@ -63,6 +63,11 @@ public class CommandAdapter extends ListenerAdapter {
         this.commands.addAll(Set.of(listeners));
     }
 
+    public static CommandAdapter getInstance() {
+        if (instance == null) instance = new CommandAdapter();
+        return instance;
+    }
+
     /**
      * Detect commands from {@link MessageReceivedEvent messages}, and create {@link MessageReceivedEvent} if needed.
      *
@@ -76,18 +81,18 @@ public class CommandAdapter extends ListenerAdapter {
         // Since CommandReceivedEvent is a subtype of GuildMessageReceivedEvent,
         // we unfortunately receive our own generated event.
         // This is bad and WILL create an infinite loop if we don't catch it.
-        if(event instanceof CommandReceivedEvent) {
+        if (event instanceof CommandReceivedEvent) {
             return;
         }
 
         // Only consider messages starting with the PREFIX.
-        if(!(event.getMessage().getContentDisplay().startsWith(ICommand.PREFIX))) return;
+        if (!(event.getMessage().getContentDisplay().startsWith(ICommand.PREFIX))) return;
 
         // Avoid self-loops
-        if(event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) return;
+        if (event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) return;
 
         // Avoid bots loops.
-        if(event.getAuthor().isBot()
+        if (event.getAuthor().isBot()
                 && Objects.equals(Config.CONFIG.getProperty("commands.allowNonUser").orElse("false"), "true")) {
             return;
         }
@@ -113,14 +118,16 @@ public class CommandAdapter extends ListenerAdapter {
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         slashcommands.stream()
                 .filter(iSlashCommand -> iSlashCommand.getName().equalsIgnoreCase(event.getName()))
+                .limit(1) // Limit to one matched commands
                 .filter(iSlashCommand -> {
                     Set<MembersBlacklist> membersBlacklists = Database.getAll(MembersBlacklist.class).stream()
                             .filter(blacklist -> blacklist.getGuild() == event.getGuild().getIdLong())
                             .collect(Collectors.toSet());
 
-                    if (!membersBlacklists.isEmpty()){
+                    if (!membersBlacklists.isEmpty()) {
                         boolean isBlacklisted = membersBlacklists.stream().findFirst().get().getBlacklistedMembers().containsKey(event.getMember().getIdLong());
-                        if (isBlacklisted) event.reply("You are blacklisted from using the bot on this server!").queue();
+                        if (isBlacklisted)
+                            event.reply("You are blacklisted from using the bot on this server!").queue();
                         return isBlacklisted;
                     } else return true;
                 })
@@ -130,10 +137,10 @@ public class CommandAdapter extends ListenerAdapter {
     private boolean doesCommandMatchString(ICommand commandToTest, String stringToTest) {
         try {
             boolean matchesCommand = commandToTest.getCommand().equalsIgnoreCase(stringToTest);
-            if(!matchesCommand)
+            if (!matchesCommand)
                 return commandToTest.getAliases().stream().anyMatch(alias -> alias.equalsIgnoreCase(stringToTest));
             else return true;
-        } catch(NullPointerException npe) {
+        } catch (NullPointerException npe) {
             logger.error("Error: " + commandToTest.getClass() + " #getCommand or #getAliases returns null ! THIS IS A CONTRACT VIOLATION!!!");
             return false;
         }
@@ -143,7 +150,7 @@ public class CommandAdapter extends ListenerAdapter {
         try {
             command.onCommandReceived(event);
             logger.info(event.getAuthor().getName() + "(" + event.getAuthor().getId() + ")" + " issued the " + event.getCommand() + " command.");
-        } catch(Exception exception) {
+        } catch (Exception exception) {
             event.getChannel().sendMessage("Command failed!\n`The error have been reported!`").queue();
 
             logger.error("Command {} threw a {}: {}", command.getCommand(),
@@ -153,10 +160,5 @@ public class CommandAdapter extends ListenerAdapter {
 
             Sentry.captureException(exception);
         }
-    }
-
-    public static CommandAdapter getInstance() {
-        if(instance == null) instance = new CommandAdapter();
-        return instance;
     }
 }
