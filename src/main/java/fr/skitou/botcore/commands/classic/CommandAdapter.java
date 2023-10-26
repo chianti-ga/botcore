@@ -45,6 +45,7 @@ public class CommandAdapter extends ListenerAdapter {
         logger.info(infoBuilder.toString());
 
         slashcommands.addAll(ReflectionUtils.getSubTypesInstance(ISlashCommand.class, BotInstance.slashCommandPackage));
+        slashcommands.addAll(ReflectionUtils.getSubTypesInstance(ISlashCommand.class, "fr.skitou.botcore.commands.slash"));
 
         infoBuilder.setLength(0);
         infoBuilder.append("Detected Slash commands: ");

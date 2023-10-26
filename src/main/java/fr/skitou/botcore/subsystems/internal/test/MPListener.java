@@ -36,8 +36,8 @@ public class MPListener extends AbstractSubsystem {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-        if(event.isFromType(ChannelType.PRIVATE)) {
-            if(event.getAuthor().getId().equalsIgnoreCase(BotInstance.getJda().getSelfUser().getId()))
+        if (event.isFromType(ChannelType.PRIVATE)) {
+            if (event.getAuthor().getId().equalsIgnoreCase(BotInstance.getJda().getSelfUser().getId()))
                 logger.info("Sent dm to " + Objects.requireNonNull(event.getChannel().asPrivateChannel().getUser()).getName() + ": " + event.getMessage().getContentDisplay());
             else
                 logger.info("Received dm from " + event.getAuthor().getName() + ": " + event.getMessage().getContentDisplay());

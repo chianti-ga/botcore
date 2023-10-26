@@ -38,65 +38,6 @@ public class ComponentInteractionListener extends AbstractSubsystem {
     private static final ConcurrentMap<String, Runnable> buttonInteraction = new ConcurrentHashMap<>();
 
     /**
-     * Indicates whether the subsystem is enabled by default.
-     *
-     * @return True if the subsystem is enabled by default, false otherwise.
-     */
-    @Override
-    public boolean isEnabledByDefault() {
-        return true;
-    }
-
-    /**
-     * Retrieves the name of the subsystem.
-     *
-     * @return The name of the subsystem.
-     */
-    @Override
-    public @NotNull String getName() {
-        return "ButtonInteractionListener";
-    }
-
-    /**
-     * Retrieves the description of the subsystem.
-     *
-     * @return The description of the subsystem.
-     */
-    @Override
-    public @NotNull String getDescription() {
-        return "Allow interaction with buttons.";
-    }
-
-    /**
-     * Handles the String Select Interaction event.
-     *
-     * @param event The String Select Interaction event.
-     */
-    @Override
-    public void onStringSelectInteraction(StringSelectInteractionEvent event) {
-        if(selectMenuInteraction.containsKey(event.getComponentId())) {
-            selectMenuInteraction.get(event.getComponentId()).accept(event);
-            BotInstance.logger.info("Trigger StringSelectInteractionEvent(" + event.getComponentId() + ").");
-
-            selectMenuInteraction.remove(event.getComponentId());
-        }
-    }
-
-    /**
-     * Handles the Button Interaction event.
-     *
-     * @param event The Button Interaction event.
-     */
-    @Override
-    public void onButtonInteraction(ButtonInteractionEvent event) {
-        if(buttonInteraction.containsKey(event.getComponentId())) {
-            buttonInteraction.get(event.getComponentId()).run();
-            BotInstance.logger.info("Trigger ButtonInteraction(" + event.getComponentId() + ").");
-            buttonInteraction.remove(event.getComponentId());
-        }
-    }
-
-    /**
      * Creates a String Select Menu interaction and registers it.
      *
      * @param selectMenu The String Select Menu to create the interaction for.
@@ -135,5 +76,64 @@ public class ComponentInteractionListener extends AbstractSubsystem {
         String id = UUID.randomUUID().toString();
         selectMenuInteraction.put(id, function);
         return selectMenu.createCopy().setId(id).build();
+    }
+
+    /**
+     * Indicates whether the subsystem is enabled by default.
+     *
+     * @return True if the subsystem is enabled by default, false otherwise.
+     */
+    @Override
+    public boolean isEnabledByDefault() {
+        return true;
+    }
+
+    /**
+     * Retrieves the name of the subsystem.
+     *
+     * @return The name of the subsystem.
+     */
+    @Override
+    public @NotNull String getName() {
+        return "ButtonInteractionListener";
+    }
+
+    /**
+     * Retrieves the description of the subsystem.
+     *
+     * @return The description of the subsystem.
+     */
+    @Override
+    public @NotNull String getDescription() {
+        return "Allow interaction with buttons.";
+    }
+
+    /**
+     * Handles the String Select Interaction event.
+     *
+     * @param event The String Select Interaction event.
+     */
+    @Override
+    public void onStringSelectInteraction(StringSelectInteractionEvent event) {
+        if (selectMenuInteraction.containsKey(event.getComponentId())) {
+            selectMenuInteraction.get(event.getComponentId()).accept(event);
+            BotInstance.logger.info("Trigger StringSelectInteractionEvent(" + event.getComponentId() + ").");
+
+            selectMenuInteraction.remove(event.getComponentId());
+        }
+    }
+
+    /**
+     * Handles the Button Interaction event.
+     *
+     * @param event The Button Interaction event.
+     */
+    @Override
+    public void onButtonInteraction(ButtonInteractionEvent event) {
+        if (buttonInteraction.containsKey(event.getComponentId())) {
+            buttonInteraction.get(event.getComponentId()).run();
+            BotInstance.logger.info("Trigger ButtonInteraction(" + event.getComponentId() + ").");
+            buttonInteraction.remove(event.getComponentId());
+        }
     }
 }

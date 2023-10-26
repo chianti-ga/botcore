@@ -38,7 +38,7 @@ public enum Config {
         URL urlSourceJson = ClassLoader.getSystemResource(configFileName);
 
         try {
-            if(!configFile.exists()) { // If root file not found, copy from source
+            if (!configFile.exists()) { // If root file not found, copy from source
                 logger.warn("Config file not found, copying from sources...");
                 Files.copy(urlSourceJson.openStream(), configFile.toPath());
             }
@@ -50,12 +50,20 @@ public enum Config {
             rootJson = gson.fromJson(reader, JsonObject.class);
             reader.close();
             stream.close();
-        } catch(IOException e) {
+        } catch (IOException e) {
             logger.error("Config threw while loading a {}: {}",
                     e.getClass().getSimpleName(), e.getMessage());
             Sentry.captureException(e);
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Provide shortcuts for frequently-used properties.
+     */
+    static String getGuildIdOrDefault(String guildConfigName, String defaultValue) {
+        final Optional<String> guildIdOptional = Optional.of(CONFIG.getPropertyElement("guild").orElseThrow().getAsJsonObject().get(guildConfigName).getAsString());
+        return guildIdOptional.orElse(defaultValue);
     }
 
     /**
@@ -112,13 +120,5 @@ public enum Config {
         writer.write(gson.toJson(rootJson));
         writer.flush();
         writer.close();
-    }
-
-    /**
-     * Provide shortcuts for frequently-used properties.
-     */
-    static String getGuildIdOrDefault(String guildConfigName, String defaultValue) {
-        final Optional<String> guildIdOptional = Optional.of(CONFIG.getPropertyElement("guild").orElseThrow().getAsJsonObject().get(guildConfigName).getAsString());
-        return guildIdOptional.orElse(defaultValue);
     }
 }

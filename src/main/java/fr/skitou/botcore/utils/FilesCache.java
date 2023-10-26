@@ -63,7 +63,7 @@ public class FilesCache {
      * It initializes the cache folder, performs an initial scan, and schedules periodic cache scans and file cleanup.
      */
     public FilesCache() {
-        if(!cacheFolder.exists()) {
+        if (!cacheFolder.exists()) {
             //noinspection ResultOfMethodCallIgnored
             cacheFolder.mkdirs();
         }
@@ -77,12 +77,12 @@ public class FilesCache {
      * This method is called during the initialization and periodic scans.
      */
     private void scan() {
-        try(Stream<Path> walk = Files.walk(cacheFolder.toPath())) {
+        try (Stream<Path> walk = Files.walk(cacheFolder.toPath())) {
             cachedFiles = walk.filter(Files::isRegularFile).map(Path::toFile).toList();
             cachedFiles.forEach(File::deleteOnExit); // Delete them even if the bot crashes or suddenly stops
             //noinspection ResultOfMethodCallIgnored
             ignoreList.forEach(String::toLowerCase);
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -96,7 +96,7 @@ public class FilesCache {
         AtomicInteger fileCount = new AtomicInteger();
         logger.info("Performing cache cleanup...");
         cachedFiles.forEach(file -> {
-            if(file.exists() && !ignoreList.contains(file.getName().toLowerCase())) {
+            if (file.exists() && !ignoreList.contains(file.getName().toLowerCase())) {
                 fileCount.getAndIncrement();
                 //noinspection ResultOfMethodCallIgnored
                 file.delete();
