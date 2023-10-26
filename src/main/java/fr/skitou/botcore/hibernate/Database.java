@@ -48,6 +48,7 @@ public class Database {
             Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
 
             ReflectionUtils.findAnnotations(Entity.class, BotInstance.entitiesPackagePackage).forEach(cfg::addAnnotatedClass);
+            ReflectionUtils.findAnnotations(Entity.class, "fr.skitou.botcore.hibernate.entities").forEach(cfg::addAnnotatedClass);
 
             Config.CONFIG.getProperty("dbPass").ifPresent(pwd -> cfg.setProperty("hibernate.connection.password", pwd));
 
