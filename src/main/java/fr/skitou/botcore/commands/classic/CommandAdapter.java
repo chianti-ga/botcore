@@ -3,6 +3,8 @@ package fr.skitou.botcore.commands.classic;
 import fr.skitou.botcore.core.BotInstance;
 import fr.skitou.botcore.core.Config;
 import fr.skitou.botcore.commands.slash.ISlashCommand;
+import fr.skitou.botcore.hibernate.Database;
+import fr.skitou.botcore.hibernate.entities.MembersBlacklist;
 import fr.skitou.botcore.utils.IsSenderAllowed;
 import fr.skitou.botcore.utils.ReflectionUtils;
 import io.sentry.Sentry;
@@ -17,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CommandAdapter extends ListenerAdapter {
     private static CommandAdapter instance;
@@ -109,6 +112,17 @@ public class CommandAdapter extends ListenerAdapter {
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         slashcommands.stream()
                 .filter(iSlashCommand -> iSlashCommand.getName().equalsIgnoreCase(event.getName()))
+                .filter(iSlashCommand -> {
+                    Set<MembersBlacklist> membersBlacklists = Database.getAll(MembersBlacklist.class).stream()
+                            .filter(blacklist -> blacklist.getGuild() == event.getGuild().getIdLong())
+                            .collect(Collectors.toSet());
+
+                    if (!membersBlacklists.isEmpty()){
+                        boolean isBlacklisted = membersBlacklists.stream().findFirst().get().getBlacklistedMembers().containsKey(event.getMember().getIdLong());
+                        if (isBlacklisted) event.reply("You are blacklisted from using the bot on this server!").queue();
+                        return isBlacklisted;
+                    } else return true;
+                })
                 .forEach(iSlashCommand -> iSlashCommand.onCommandReceived(event));
     }
 
