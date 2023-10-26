@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class CommandAdapter extends ListenerAdapter {
@@ -116,6 +117,7 @@ public class CommandAdapter extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
+        event.deferReply(false).queue();
         slashcommands.stream()
                 .filter(iSlashCommand -> iSlashCommand.getName().equalsIgnoreCase(event.getName()))
                 .limit(1) // Limit to one matched commands
@@ -131,7 +133,20 @@ public class CommandAdapter extends ListenerAdapter {
                         return isBlacklisted;
                     } else return true;
                 })
-                .forEach(iSlashCommand -> iSlashCommand.onCommandReceived(event));
+                .forEach(iSlashCommand -> {
+                    try {
+                        iSlashCommand.onCommandReceived(event);
+                    } catch (Exception exception) {
+                        event.getChannel().sendMessage("Command failed!\n`The error have been reported!`").queue();
+
+                        logger.error("Command {} threw a {}: {}", iSlashCommand.getName(),
+                                exception.getClass().getSimpleName(), exception.getMessage());
+
+                        exception.printStackTrace();
+
+                        Sentry.captureException(exception);
+                    }
+                });
     }
 
     private boolean doesCommandMatchString(ICommand commandToTest, String stringToTest) {
