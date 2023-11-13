@@ -137,7 +137,7 @@ public class CommandAdapter extends ListenerAdapter {
                     try {
                         iSlashCommand.onCommandReceived(event);
                     } catch (Exception exception) {
-                        event.getChannel().sendMessage("Command failed!\n`The error have been reported!`").queue();
+                        event.getChannel().sendMessage("Command failed!\n`The error has been reported!`").queue();
 
                         logger.error("Command {} threw a {}: {}", iSlashCommand.getName(),
                                 exception.getClass().getSimpleName(), exception.getMessage());
