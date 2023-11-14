@@ -24,7 +24,7 @@ repositories {
 allprojects {
 
     dependencies {
-        implementation 'com.google.guava:guava:32.1.2-jre'
+        implementation 'com.google.guava:guava:32.1.3-jre'
 
         //===Unit tests===
 
