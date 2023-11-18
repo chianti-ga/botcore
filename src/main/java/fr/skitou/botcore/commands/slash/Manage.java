@@ -16,16 +16,36 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class Restrict implements ISlashCommand {
+public class Manage implements ISlashCommand {
+
+    @Override
+    public @NotNull Set<SubcommandData> getSubcommandDatas() {
+        return Set.of(new SubcommandData("list", "(botadmin) List all restricted members on this server"),
+                new SubcommandData("restric", "(botadmin) Restric someone from using the bot."));
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "manage";
+    }
+
+    @Override
+    public @NotNull String getHelp() {
+        return "(botadmin) Restric or unrestrict someone";
+    }
+
+    @Override
+    public void onCommandReceived(SlashCommandInteractionEvent event) {
+
+    }
+}
+
+class Restric implements ISubCommand{
+
     @Override
     public Set<OptionData> getOptionData() {
         return Set.of(new OptionData(OptionType.USER, "user", "user to restrict", true),
                 new OptionData(OptionType.INTEGER, "duration", "duration in seconds", true));
-    }
-
-    @Override
-    public @NotNull Set<SubcommandData> getSubcommandDatas() {
-        return Set.of(new SubcommandData("list", "show restricted users"));
     }
 
     @Override
@@ -35,11 +55,11 @@ public class Restrict implements ISlashCommand {
 
     @Override
     public @NotNull String getHelp() {
-        return "(botadmin) Restric someone from using the bot.";
+        return "";
     }
 
     @Override
-    public void onCommandReceived(SlashCommandInteractionEvent event) {
+    public void onSubCommandReceived(SlashCommandInteractionEvent event) {
         if (!IsSenderAllowed.SERVER_ADMIN.test(event.getMember()) || !IsSenderAllowed.BotAdmin.test(event.getMember())) {
             event.reply("You don't have the permission to execute this command.").queue();
             return;
@@ -67,6 +87,11 @@ public class Restrict implements ISlashCommand {
             new MembersBlacklist(event.getGuild().getIdLong(), map);
         }
     }
+
+    @Override
+    public String CommandClassName() {
+        return "manage";
+    }
 }
 
 class List implements ISubCommand {
@@ -77,7 +102,7 @@ class List implements ISubCommand {
 
     @Override
     public @NotNull String getHelp() {
-        return "list all restricted members on this server";
+        return "";
     }
 
     @Override
@@ -103,6 +128,6 @@ class List implements ISubCommand {
 
     @Override
     public String CommandClassName() {
-        return "restric";
+        return "manage";
     }
 }
