@@ -26,6 +26,11 @@ public class ManageCommand extends AbstractCommand {
 
     @Override
     public @NotNull String getName() {
+        return "manage";
+    }
+
+    @Override
+    public @NotNull String getHelp() {
         return "^manage restrict/unrestrict {user} (duration)";
     }
 
