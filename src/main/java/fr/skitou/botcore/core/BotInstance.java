@@ -2,6 +2,7 @@ package fr.skitou.botcore.core;
 
 import fr.skitou.botcore.commands.classic.CommandAdapter;
 import fr.skitou.botcore.commands.slash.ISlashCommand;
+import fr.skitou.botcore.hibernate.Database;
 import fr.skitou.botcore.subsystems.SubsystemAdapter;
 import fr.skitou.botcore.utils.FilesCache;
 import fr.skitou.botcore.utils.reporter.SentryManager;
@@ -49,9 +50,12 @@ public class BotInstance {
         subsystemPackage = builder.subsystemPackage;
         entitiesPackagePackage = builder.databaseEntitiesPackage;
         botArgs = builder.args;
+
+        Database.getFactory(); // Init db BEFORE adapters
         eventListeners = Set.of(CommandAdapter.getInstance(), SubsystemAdapter.getInstance());
 
         logger.warn(isTestMode() ? "Bot Starting in TESTMODE" : "Bot Starting");
+
 
         // Create instances of SlashCommands when JDA is ready
         runWhenReady(() -> {
