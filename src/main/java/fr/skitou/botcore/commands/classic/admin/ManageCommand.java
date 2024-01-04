@@ -7,8 +7,7 @@ import fr.skitou.botcore.hibernate.entities.MembersBlacklist;
 import fr.skitou.botcore.utils.IsSenderAllowed;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,7 +30,7 @@ public class ManageCommand extends AbstractCommand {
 
     @Override
     public @NotNull String getHelp() {
-        return "^manage restrict/unrestrict {user} (duration)";
+        return "^manage restrict/unrestrict {user}";
     }
 
     @Override
@@ -42,29 +41,14 @@ public class ManageCommand extends AbstractCommand {
             return;
         }
         switch (event.getArgs().get(0)) {
-            case "restric" -> {
-                if (event.getArgs().size() < 3) {
+            case "restrict" -> {
+                if (event.getArgs().size() < 2) {
                     event.getChannel().sendMessage("Invalid syntax").queue();
                     sendHelp(event.getChannel().asTextChannel());
                     return;
                 }
                 if (event.getGuild().getMemberById(event.getArgs().get(1)) == null) {
-                    event.getChannel().sendMessage("User doesn't exist");
-                    return;
-                }
-                int duration;
-
-                try {
-                    Integer.parseInt(event.getArgs().get(2));
-                } catch (NumberFormatException e) {
-                    event.getChannel().sendMessage("Invalid duration (in hours)").queue();
-                    return;
-                }
-
-                duration = Integer.parseInt(event.getArgs().get(2));
-
-                if (duration <= 0) {
-                    event.getChannel().sendMessage("User doesn't exist");
+                    event.getChannel().sendMessage("User doesn't exist").queue();
                     return;
                 }
 
@@ -72,20 +56,18 @@ public class ManageCommand extends AbstractCommand {
                         .filter(blacklist -> blacklist.getGuild() == event.getGuild().getIdLong())
                         .collect(Collectors.toSet());
 
-                Map<Long, Integer> map = new HashMap<>();
-
-                map.put(Long.valueOf(event.getArgs().get(1)), duration);
-
                 if (membersBlacklists.isEmpty()) {
-                    Database.saveOrUpdate(new MembersBlacklist(event.getGuild().getIdLong(), map));
+                    new MembersBlacklist(event.getGuild().getIdLong(), Set.of(Long.valueOf(event.getArgs().get(1))));
                 } else {
-                    membersBlacklists.stream().findFirst().get().getBlacklistedMembers().put(Long.valueOf(event.getArgs().get(1)), duration);
-                    Database.saveOrUpdate(membersBlacklists);
+                    Set<Long> blacklistedMembers = new HashSet<>(membersBlacklists.stream().findFirst().get().getBlacklistedMembers());
+                    blacklistedMembers.add(Long.valueOf(event.getArgs().get(1)));
+                    new MembersBlacklist(event.getGuild().getIdLong(), blacklistedMembers);
+
                 }
 
-                event.getChannel().sendMessage(event.getGuild().getMemberById(event.getArgs().get(1)).getAsMention() + " has been restricted from using the bot for " + duration + "h").queue();
+                event.getChannel().sendMessage(event.getGuild().getMemberById(event.getArgs().get(1)).getAsMention() + " has been restricted from using the bot").queue();
             }
-            case "unrestric" -> {
+            case "unrestrict" -> {
 
                 if (event.getGuild().getMemberById(event.getArgs().get(1)) == null) {
                     event.getChannel().sendMessage("User doesn't exist");
@@ -94,11 +76,15 @@ public class ManageCommand extends AbstractCommand {
 
                 Set<MembersBlacklist> membersBlacklists = Database.getAll(MembersBlacklist.class).stream()
                         .filter(blacklist -> blacklist.getGuild() == event.getGuild().getIdLong())
-                        .filter(blacklist -> blacklist.getBlacklistedMembers().containsKey(Long.valueOf(event.getArgs().get(1))))
                         .collect(Collectors.toSet());
-                membersBlacklists.forEach(blacklist -> blacklist.getBlacklistedMembers().remove(Long.valueOf(event.getArgs().get(1))));
 
-                Database.saveOrUpdate(membersBlacklists);
+
+                Set<Long> blacklistedMembers = new HashSet<>(membersBlacklists.stream().findFirst().get().getBlacklistedMembers());
+
+                blacklistedMembers.remove(Long.valueOf(event.getArgs().get(1)));
+
+                new MembersBlacklist(event.getGuild().getIdLong(), blacklistedMembers);
+
                 event.getChannel().sendMessage(":white_check_mark:").queue();
             }
             case "list" -> {
