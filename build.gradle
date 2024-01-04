@@ -150,8 +150,7 @@ publishing {
     repositories {
         maven {
             name "reposiliteRepositoryReleases"
-            url "http://45.155.169.234:4578/releases"
-            allowInsecureProtocol = true
+            url "https://reposilite.skitou.fr/releases"
             credentials(PasswordCredentials)
             authentication {
                 basic(BasicAuthentication)
