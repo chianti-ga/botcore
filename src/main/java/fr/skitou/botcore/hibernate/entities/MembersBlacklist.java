@@ -1,15 +1,13 @@
 package fr.skitou.botcore.hibernate.entities;
 
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import fr.skitou.botcore.hibernate.Database;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Map;
+import java.util.Set;
 
 @Getter
 @ToString
@@ -23,11 +21,16 @@ public class MembersBlacklist {
 
     @Getter
     @Setter(AccessLevel.PRIVATE)
-    @ElementCollection
-    private Map<Long, Integer> blacklistedMembers;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<Long> blacklistedMembers;
 
-    public MembersBlacklist(long guild, Map<Long, Integer> blacklistedMembers) {
+    public MembersBlacklist(long guild, Set<Long> blacklistedMembers) {
         this.guild = guild;
         this.blacklistedMembers = blacklistedMembers;
+
+        Database.saveOrUpdate(this);
+    }
+
+    protected MembersBlacklist() {
     }
 }
