@@ -120,19 +120,20 @@ public class CommandAdapter extends ListenerAdapter {
         slashcommands.stream()
                 .filter(iSlashCommand -> iSlashCommand.getName().equalsIgnoreCase(event.getName()))
                 .limit(1) // Limit to one matched commands
-                .filter(iSlashCommand -> {
+                .forEach(iSlashCommand -> {
                     Set<MembersBlacklist> membersBlacklists = Database.getAll(MembersBlacklist.class).stream()
                             .filter(blacklist -> blacklist.getGuild() == event.getGuild().getIdLong())
                             .collect(Collectors.toSet());
 
                     if (!membersBlacklists.isEmpty()) {
-                        boolean isBlacklisted = membersBlacklists.stream().findFirst().get().getBlacklistedMembers().containsKey(event.getMember().getIdLong());
-                        if (isBlacklisted)
-                            event.reply("You are blacklisted from using the bot on this server!").queue();
-                        return isBlacklisted;
-                    } else return true;
-                })
-                .forEach(iSlashCommand -> {
+                        boolean isBlacklisted = membersBlacklists.stream().findFirst().get().getBlacklistedMembers().contains(event.getMember().getIdLong());
+
+                        if (isBlacklisted) {
+                            event.getHook().editOriginal("You are blacklisted from using the bot on this server!").queue();
+                            return;
+                        }
+                    }
+
                     try {
                         iSlashCommand.onCommandReceived(event);
                     } catch (Exception exception) {
