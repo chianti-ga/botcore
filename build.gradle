@@ -28,7 +28,7 @@ allprojects {
 
         //===Unit tests===
 
-        testImplementation('org.junit.jupiter:junit-jupiter-api:5.10.0')
+        testImplementation('org.junit.jupiter:junit-jupiter-api:5.10.1')
         testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.10.0')
 
         testImplementation 'org.mockito:mockito-core:5.7.0'
@@ -37,12 +37,12 @@ allprojects {
 
         // === APIs ===
         // JDA
-        implementation("net.dv8tion:JDA:5.0.0-beta.17")
+        implementation("net.dv8tion:JDA:5.0.0-beta.20")
 
         // === Logging ==
 
         // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-        implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.9'
+        implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.11'
         // https://mvnrepository.com/artifact/ch.qos.logback/logback
         implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.4.14'
 
@@ -67,7 +67,7 @@ allprojects {
 
         implementation 'com.vdurmont:emoji-java:5.1.1'
 
-        implementation 'io.sentry:sentry:7.1.0'
+        implementation 'io.sentry:sentry:7.2.0'
 
         implementation group: 'club.minnced', name: 'discord-webhooks', version: '0.8.4'
     }
