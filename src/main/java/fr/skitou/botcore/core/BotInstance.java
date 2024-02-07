@@ -59,6 +59,7 @@ public class BotInstance {
 
         // Create instances of SlashCommands when JDA is ready
         runWhenReady(() -> {
+            logger.info("Updating guild commands!");
             HashSet<ISlashCommand> slashCommands = CommandAdapter.getInstance().getSlashcommands();
 
             jda.getGuilds().forEach(guild -> {
