@@ -58,20 +58,7 @@ public class BotInstance {
 
 
         // Create instances of SlashCommands when JDA is ready
-        runWhenReady(() -> {
-            logger.info("Updating guild commands!");
-            HashSet<ISlashCommand> slashCommands = CommandAdapter.getInstance().getSlashcommands();
-
-            jda.getGuilds().forEach(guild -> {
-                Set<SlashCommandData> a = slashCommands.stream()
-                        .map(iSlashCommand ->
-                                Commands.slash(iSlashCommand.getName().toLowerCase(), iSlashCommand.getHelp())
-                                        .addOptions(iSlashCommand.getOptionData())
-                                        .addSubcommands(iSlashCommand.getSubcommandDatas())).collect(Collectors.toSet());
-                guild.updateCommands().addCommands(a).queue();
-            });
-
-        });
+        runWhenReady(BotInstance::updateGuildCommands);
 
         try {
             jda = JDABuilder.createDefault(getToken())
@@ -110,6 +97,20 @@ public class BotInstance {
             logger.error("Can't get BotCore-Version from jar manifest (normal on dev env).");
         }
 
+    }
+
+    public static void updateGuildCommands() {
+        logger.info("Updating guild commands!");
+        HashSet<ISlashCommand> slashCommands = CommandAdapter.getInstance().getSlashcommands();
+
+        jda.getGuilds().forEach(guild -> {
+            Set<SlashCommandData> a = slashCommands.stream()
+                    .map(iSlashCommand ->
+                            Commands.slash(iSlashCommand.getName().toLowerCase(), iSlashCommand.getHelp())
+                                    .addOptions(iSlashCommand.getOptionData())
+                                    .addSubcommands(iSlashCommand.getSubcommandDatas())).collect(Collectors.toSet());
+            guild.updateCommands().addCommands(a).queue();
+        });
     }
 
     /**
