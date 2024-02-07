@@ -1,15 +1,8 @@
 package fr.skitou.botcore.subsystems;
 
-import fr.skitou.botcore.commands.classic.CommandAdapter;
-import fr.skitou.botcore.commands.slash.ISlashCommand;
+import fr.skitou.botcore.core.BotInstance;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
-import net.dv8tion.jda.api.interactions.commands.build.Commands;
-import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class SlashCommandUpdater extends AbstractSubsystem {
     @Override
@@ -29,12 +22,6 @@ public class SlashCommandUpdater extends AbstractSubsystem {
 
     @Override
     public void onGuildJoin(@NotNull GuildJoinEvent event) {
-        HashSet<ISlashCommand> slashCommands = CommandAdapter.getInstance().getSlashcommands();
-        Set<SlashCommandData> a = slashCommands.stream()
-                .map(iSlashCommand ->
-                        Commands.slash(iSlashCommand.getName().toLowerCase(), iSlashCommand.getHelp())
-                                .addOptions(iSlashCommand.getOptionData())
-                                .addSubcommands(iSlashCommand.getSubcommandDatas())).collect(Collectors.toSet());
-        event.getGuild().updateCommands().addCommands(a).queue();
+        BotInstance.updateGuildCommands();
     }
 }
