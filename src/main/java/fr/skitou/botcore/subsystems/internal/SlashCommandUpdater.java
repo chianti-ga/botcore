@@ -1,6 +1,7 @@
-package fr.skitou.botcore.subsystems;
+package fr.skitou.botcore.subsystems.internal;
 
 import fr.skitou.botcore.core.BotInstance;
+import fr.skitou.botcore.subsystems.AbstractSubsystem;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import org.jetbrains.annotations.NotNull;
 

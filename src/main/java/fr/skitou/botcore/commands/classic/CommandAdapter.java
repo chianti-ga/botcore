@@ -33,9 +33,13 @@ public class CommandAdapter extends ListenerAdapter {
      * Automatically add all detected commands as commands.
      */
     public CommandAdapter() {
+        /**
+         * Shity way to remove duplicate (why???) on docker²
+         */
         commands.addAll(ReflectionUtils.getSubTypesInstance(ICommand.class));
-        commands.addAll(ReflectionUtils.getSubTypesInstance(ICommand.class, BotInstance.classicCommandPackage));
-        commands.addAll(ReflectionUtils.getSubTypesInstance(ICommand.class, BotInstance.subsystemPackage));
+        HashSet<ICommand> tempCommands = ReflectionUtils.getSubTypesInstance(ICommand.class, BotInstance.classicCommandPackage);
+        tempCommands.removeAll(commands);
+        commands.addAll(tempCommands);
 
 
         StringBuilder infoBuilder = new StringBuilder();
@@ -44,8 +48,14 @@ public class CommandAdapter extends ListenerAdapter {
         infoBuilder.append("Total: ").append(commands.size());
         logger.info(infoBuilder.toString());
 
-        slashcommands.addAll(ReflectionUtils.getSubTypesInstance(ISlashCommand.class, BotInstance.slashCommandPackage));
         slashcommands.addAll(ReflectionUtils.getSubTypesInstance(ISlashCommand.class, "fr.skitou.botcore.commands.slash"));
+
+        /**
+         * Shity way to remove duplicate (why???) on docker²
+         */
+        HashSet<ISlashCommand> tempSlashCommands = ReflectionUtils.getSubTypesInstance(ISlashCommand.class, BotInstance.slashCommandPackage);
+        tempSlashCommands.removeAll(slashcommands);
+        slashcommands.addAll(tempSlashCommands);
 
         infoBuilder.setLength(0);
         infoBuilder.append("Detected Slash commands: ");
