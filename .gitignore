@@ -153,4 +153,3 @@ gradle-app.setting
 .idea/$PRODUCT_WORKSPACE_FILE$
 **/*secret**
 data/
-config.json
