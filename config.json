@@ -1,0 +1,11 @@
+//This file is configured for dev/test purpose, please configure it when passing to production
+{
+  "bot.token": "",
+  "admins": [
+    ""
+  ],
+  "bot.prefix": "^",
+  "commands.allowNonUser": "false",
+  "loggerUrl": "",
+  "sentryDns": ""
+}
