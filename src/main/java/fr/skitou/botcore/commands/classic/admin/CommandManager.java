@@ -22,6 +22,7 @@ import fr.skitou.botcore.commands.classic.AbstractCommand;
 import fr.skitou.botcore.commands.classic.CommandAdapter;
 import fr.skitou.botcore.commands.classic.CommandReceivedEvent;
 import fr.skitou.botcore.commands.classic.ICommand;
+import fr.skitou.botcore.core.BotInstance;
 import fr.skitou.botcore.utils.IsSenderAllowed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.jetbrains.annotations.NotNull;
@@ -109,6 +110,7 @@ public class CommandManager extends AbstractCommand {
                         .forEach(ICommand::disable);
                 listCommand(event);
             }
+            case "refresh" -> BotInstance.updateGuildCommands();
             default -> sendHelp(event);
         }
     }
