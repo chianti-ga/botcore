@@ -15,8 +15,8 @@ This is a "core" providing a robust foundation for developing Discord bots.
 - **Database Support**: BotCore supports database interactions via Hibernate (SQLite), enabling easy data storage and
   retrieval for your bot's needs.
 - **Configurability**: This core integrates configuration via a .json file, see `Config`.
-- **Java 20 Compatibility**: Developed using Java 20 with the latest language features and improvements.
-- **Sentry and Webhook Error Reporting**: Implementation of Sentry and Discord webhook to report errors.
+- **Java 20 Compatibility**: Developed using Java 20 with the latest language features.
+- **Sentry and Webhook Error Reporting**: Implementation of Sentry and Discord webhook to report errors via Logback.
 
 ### Prerequisites
 
