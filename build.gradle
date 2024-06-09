@@ -4,7 +4,7 @@ plugins {
     //Update deps
     id "com.github.ben-manes.versions" version "0.51.0"
 
-    id "io.freefair.lombok" version "8.4"
+    id "io.freefair.lombok" version "8.6"
 
     id 'java-library'
     id 'maven-publish'
@@ -24,32 +24,32 @@ repositories {
 allprojects {
 
     dependencies {
-        implementation 'com.google.guava:guava:33.0.0-jre'
+        implementation 'com.google.guava:guava:33.2.0-jre'
 
         //===Unit tests===
 
-        testImplementation('org.junit.jupiter:junit-jupiter-api:5.10.1')
-        testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.10.0')
+        testImplementation('org.junit.jupiter:junit-jupiter-api:5.10.2')
+        testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.10.2')
 
-        testImplementation 'org.mockito:mockito-core:5.7.0'
+        testImplementation 'org.mockito:mockito-core:5.12.0'
         // https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter
-        testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.8.0'
+        testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.11.0'
 
         // === APIs ===
         // JDA
-        implementation("net.dv8tion:JDA:5.0.0-beta.20")
+        implementation("net.dv8tion:JDA:5.0.0-beta.24")
 
         // === Logging ==
 
         // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-        implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.11'
+        implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.13'
         // https://mvnrepository.com/artifact/ch.qos.logback/logback
         implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.4.14'
 
         // Utils
         implementation group: 'org.reflections', name: 'reflections', version: '0.10.2'
 
-        implementation group: 'org.jetbrains', name: 'annotations', version: '24.0.1'
+        implementation group: 'org.jetbrains', name: 'annotations', version: '24.1.0'
         implementation 'org.apache.commons:commons-lang3:3.14.0'
 
         implementation 'com.google.code.gson:gson:2.10.1'
@@ -57,17 +57,17 @@ allprojects {
         // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
         implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.14.0'
         // https://mvnrepository.com/artifact/commons-io/commons-io
-        implementation group: 'commons-io', name: 'commons-io', version: '2.15.1'
+        implementation group: 'commons-io', name: 'commons-io', version: '2.16.1'
 
         //Java Persistence API
-        implementation('org.hibernate.orm:hibernate-core:6.4.1.Final')
-        implementation 'org.hibernate.orm:hibernate-c3p0:6.4.4.Final'
-        implementation 'org.hibernate.orm:hibernate-community-dialects:6.4.1.Final'
-        implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.45.1.0'
+        implementation('org.hibernate.orm:hibernate-core:6.5.0.Final')
+        implementation 'org.hibernate.orm:hibernate-c3p0:6.5.2.Final'
+        implementation 'org.hibernate.orm:hibernate-community-dialects:6.5.2.Final'
+        implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.45.3.0'
 
         implementation 'com.vdurmont:emoji-java:5.1.1'
 
-        implementation 'io.sentry:sentry:7.3.0'
+        implementation 'io.sentry:sentry:7.10.0'
 
         implementation group: 'club.minnced', name: 'discord-webhooks', version: '0.8.4'
     }
