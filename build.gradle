@@ -29,7 +29,7 @@ allprojects {
         //===Unit tests===
 
         testImplementation('org.junit.jupiter:junit-jupiter-api:5.11.3')
-        testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.10.3')
+        testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.12.0')
 
         testImplementation 'org.mockito:mockito-core:5.14.2'
         // https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter
@@ -49,7 +49,7 @@ allprojects {
         // Utils
         implementation group: 'org.reflections', name: 'reflections', version: '0.10.2'
 
-        implementation group: 'org.jetbrains', name: 'annotations', version: '24.1.0'
+        implementation group: 'org.jetbrains', name: 'annotations', version: '26.0.2'
         implementation 'org.apache.commons:commons-lang3:3.17.0'
 
         implementation 'com.google.code.gson:gson:2.11.0'
@@ -61,7 +61,7 @@ allprojects {
 
         //Java Persistence API
         implementation('org.hibernate.orm:hibernate-core:6.6.3.Final')
-        implementation 'org.hibernate.orm:hibernate-c3p0:6.5.2.Final'
+        implementation 'org.hibernate.orm:hibernate-c3p0:6.6.9.Final'
         implementation 'org.hibernate.orm:hibernate-community-dialects:6.5.2.Final'
         implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.47.1.0'
 
